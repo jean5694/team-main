@@ -3,7 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="nb" tagdir="/WEB-INF/tags/nb" %>
-
 <% request.setCharacterEncoding("utf-8"); %>
 
 <!DOCTYPE html>
@@ -12,14 +11,13 @@
 
 <%@ include file="/WEB-INF/subModules/bootstrapHeader.jsp" %>
 
-<title>메인 페이지</title>
+<title>마이페이지 </title>
 </head>
 <body>
 	<div class="container">
-		<nb:navbar></nb:navbar>			
-		<h1>메인페이지입니다 </h1>
-	</div>
+		<nb:navbar></nb:navbar>
 		
-
+		
+	</div>
 </body>
 </html>

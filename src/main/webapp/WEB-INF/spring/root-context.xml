@@ -15,7 +15,7 @@
 		<property name="jdbcUrl" value="jdbc:mariadb://13.125.118.27/test"></property>
 	 -->
 	 	<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
-		<property name="jdbcUrl" value="jdbc:log4jdbc:mariadb://54.180.138.71/Gohome"></property>
+		<property name="jdbcUrl" value="jdbc:log4jdbc:mariadb://52.78.42.226/Gohome"></property>
 		<property name="username" value="root"></property>
 		<property name="password" value="wnddkdwjdqhcjfl1"></property>
 		<property name="maximumPoolSize" value="1"></property>
@@ -44,10 +44,3 @@
 	<!-- transaction -->
 	<tx:annotation-driven/>
 </beans>
-
-
-
-
-
-
-
