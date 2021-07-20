@@ -12,6 +12,9 @@
 		VALUES
 		(#{userid}, #{userpw}, #{userName})
 	</insert>
+	<insert id="">
+	
+	</insert>
 
 
 
