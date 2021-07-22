@@ -4,35 +4,56 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="org.zerock.mapper.UserMapper">
+<insert id="insert">
+  	INSERT INTO GH_User
+  	(userid, userpw, username, userEmail, userPhone, CompanyRegistrationNumber)
+  	VALUES 
+  	(#{userid}, #{userpw}, #{userName}, #{userEmail}, #{userPhone}, #{CompanyRegistrationNumber})
+  </insert>
+  
+  <insert id="insertAuth">
+  	INSERT INTO GH_User_auth
+  	(userid, auth)
+  	VALUES
+  	(#{userid}, #{auth})
+  </insert>
+  
+<select id="read" resultMap="UserMap">
+  SELECT 
+	m.userid userid,
+	m.userpw userpw,
+	m.username username,
+	m.userEmail userEmail,
+	m.userPhone userPhone,
+	m.CompanyRegistrationNumber CompanyRegistrationNumber,
+	m.useradd useradd,
+	m.enabled enabled,
+	m.regdate regdate,
+	m.updateDate updateDate,
+	a.auth auth
+ FROM 
+    GH_User m LEFT JOIN GH_User_auth a ON m.userid = a.userid
+  WHERE
+    m.userid = #{userid} AND enabled = 1
+  
+  </select>
+  
+<resultMap type="org.zerock.domain.UserVO" id="UserMap">
+<id property="userid" column="userid" />
+  	<result property="userpw" column="userpw" />
+  	<result property="userName" column="username" />
+  	<result property="userEmail" column="userEmail" />
+  	<result property="userPhone" column="userPhone" />
+  	<result property="CompanyRegistrationNumber" column="CompanyRegistrationNumber" />
+  	<result property="useradd" column="useradd" />	
+  	<result property="regdate" column="regdate" />
+  	<result property="updateDate" column="updateDate" />
+  	<result property="enabled" column="enabled" />
+  	<collection property="authList" resultMap="authMap" />
+  </resultMap>
+  <resultMap type="org.zerock.domain.AuthVO" id="authMap">
+  	<result property="userid" column="userid" />
+  	<result property="auth" column="auth" />
+</resultMap>
 
-
-	<insert id="insert">
-		INSERT INTO GH_User
-		(userid, userpw, username)
-		VALUES
-		(#{userid}, #{userpw}, #{userName})
-	</insert>
-	<insert id="">
-	
-	</insert>
-
-
-
-	  <select id="read" resultType="org.zerock.domain.UserVO">
-		  SELECT 
-			userid userid,
-			userpw userpw,
-			username username,
-			userphone userphone,
-			userem userem,
-			useradd useradd,
-			enabled enabled,
-			regdate regdate,
-			updateDate updateDate
-		  FROM 
-		    GH_User 
-		  WHERE
-		    userid = #{userid}
-
-     </select>
 </mapper>

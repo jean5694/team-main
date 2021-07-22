@@ -5,11 +5,32 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
-<bean id="customUserDetailsService"
-	class="org.zerock.security.CustomUserDetailsService"></bean>
 
-<security:http>
+<!--빈객체로 만들어서 사용해야함   -->
+<bean id="bcryptPasswordEncoder" 
+	class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	
+<bean id="customUserDetailsService"
+	class="org.zerock.security.CustomUserDetailsService"></bean>	
+	
+ <security:http>
+	<security:http-basic/>
+	
+	<!-- //default-target-url 성공했을때 가는 페이지  -->
+	<security:form-login login-page="/main/login" default-target-url="/main/home"/>
+	
+	<security:logout/>
+	
+	<security:csrf disabled="true"/>
+	
+	<!-- 로그인유지  -->
+	<security:remember-me />
+	
+	
+</security:http>
+ 
+<!-- 로그인 회원가입이랑 무슨관련이있는지 ? -->
+<!--  <security:http>
 	<security:intercept-url pattern = "/secure/all" access="permitAll"/>
 	<security:intercept-url pattern = "/secure/user" access="hasRole('ROLE_USER')"/>
 	<security:intercept-url pattern = "/secure/admin" access="hasRole('ROLE_ADMIN')"/>
@@ -18,23 +39,24 @@
 	<security:csrf disabled="true"/>
 	<security:remember-me data-source-ref="dataSource" />
 </security:http>
+ -->
 
-<security:authentication-manager>
-		<security:authentication-provider user-service-ref="customUserDetailsService">
-			<security:password-encoder ref="passwordEncoder"/>
-		</security:authentication-provider>
-</security:authentication-manager>
 
-<!--  
-<security:authentication-manager>
+<!-- <security:authentication-manager>
 	<security:authentication-provider>
-		<security:user-service>  {noop} =  평문이 되게 만드는 코드
-			<security:user name="user" password="{noop}user" authorities="ROLE_USER"/>
-			<security:user name="admin" password="{noop}admin" authorities="ROLE_USER, ROLE_ADMIN"/> 
+		<security:user-service>
+			<security:user name="member" password="{noop}member" authorities="ROLE_MEMBER"/> 
 		</security:user-service>
 	</security:authentication-provider>
-</security:authentication-manager> 
--->
+</security:authentication-manager>
+ -->
 
-
+<!-- 만들어준 객체를 사용하겠따ㅓ  -->
+<security:authentication-manager>
+		<security:authentication-provider user-service-ref="customUserDetailsService">
+			<security:password-encoder ref="bcryptPasswordEncoder"/>
+		</security:authentication-provider>
+	</security:authentication-manager>	
+	
+	
 </beans>

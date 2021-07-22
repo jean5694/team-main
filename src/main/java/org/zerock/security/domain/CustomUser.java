@@ -12,10 +12,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class CustomUser extends User {
-	
+
+	//User 정보를 꺼내서 볼수있게 
 	@Getter
 	@Setter
-	private UserVO member;
+	private UserVO user;
 
 	public CustomUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);
@@ -26,7 +27,6 @@ public class CustomUser extends User {
 				.map(auth -> new SimpleGrantedAuthority(auth.getAuth()))
 				.collect(Collectors.toList()));
 		
-		member = vo;
+		user = vo;
 	}
-
 }

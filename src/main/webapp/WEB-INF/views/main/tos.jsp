@@ -13,6 +13,7 @@
 	
 	
 	<style type="text/css">
+	
 		*{ margin: 0;padding: 0;}
 		body{ background-color: #ececee;}
 		ul>li{ list-style: none}
@@ -40,6 +41,7 @@
 	
 	<script>
 		$(document).ready(function(){
+		  	$("input[type=checkbox]").prop("checked", false);
 		  	$("#checkall").click(function(){
 		
 		        if($("#checkall").prop("checked")){

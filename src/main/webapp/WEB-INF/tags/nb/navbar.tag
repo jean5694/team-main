@@ -3,18 +3,55 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
+
+<script>
+$(function() {
+	$("#navbar-logout-link").click(function(e) {
+		e.preventDefault();
+		$("#navbar-logout-form").submit();
+	});
+})
+</script>
+
 <div class="d-flex justify-content-end">
 	<nav class="navbar navbar-expand-sm navbar-light">
 		<ul  class="navbar-nav">
+		
+		<sec:authorize access="!isAuthenticated()">
 			<li class="nav-item">
        			 <a class="nav-link" href="${appRoot }/main/login">로그인 </a>
      		 </li>
+     	</sec:authorize>
+     	
+     	<sec:authorize access="!isAuthenticated()">
 	      <li class="nav-item">
 	        <a class="nav-link" href="${appRoot }/main/tos" tabindex="-1" aria-disabled="true">회원가입 </a>
 	      </li>
+	     </sec:authorize>
+	     
+	     <sec:authorize access="isAuthenticated()">
+	     <li class="nav-item p-2">
+			      	<sec:authentication property="principal.username" />
+			      	<span style="color:#6d0d27;">님 반갑습니다 !</span>
+		</li>
+	     <li class="nav-item">
+            <a class="nav-link" href="#" id="navbar-logout-link">로그아웃</a>
+         </li>
+         </sec:authorize>
+         
+         <sec:authorize access="isAuthenticated()">
+         <li class="nav-item">
+       			 <a class="nav-link" href="${appRoot }/main/mypage">마이페이지 </a>
+     		 </li>
+     	</sec:authorize> 
+     	
 		</ul>
 		</nav>
 </div>
+
+	      <form action="${appRoot }/logout" method="post" id="navbar-logout-form">
+        	</form>
+        	
 <div class="navbar row justify-content-center p-0">
 		<div class="col-md-3 text-center p-0">
 		  <a class="navbar-brand" href="${appRoot}/main/home"> 
