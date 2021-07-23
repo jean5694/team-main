@@ -4,56 +4,84 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="org.zerock.mapper.UserMapper">
-<insert id="insert">
-  	INSERT INTO GH_User
-  	(userid, userpw, username, userEmail, userPhone, CompanyRegistrationNumber)
-  	VALUES 
-  	(#{userid}, #{userpw}, #{userName}, #{userEmail}, #{userPhone}, #{CompanyRegistrationNumber})
-  </insert>
-  
-  <insert id="insertAuth">
-  	INSERT INTO GH_User_auth
-  	(userid, auth)
-  	VALUES
-  	(#{userid}, #{auth})
-  </insert>
-  
-<select id="read" resultMap="UserMap">
-  SELECT 
-	m.userid userid,
-	m.userpw userpw,
-	m.username username,
-	m.userEmail userEmail,
-	m.userPhone userPhone,
-	m.CompanyRegistrationNumber CompanyRegistrationNumber,
-	m.useradd useradd,
-	m.enabled enabled,
-	m.regdate regdate,
-	m.updateDate updateDate,
-	a.auth auth
- FROM 
-    GH_User m LEFT JOIN GH_User_auth a ON m.userid = a.userid
-  WHERE
-    m.userid = #{userid} AND enabled = 1
-  
-  </select>
-  
-<resultMap type="org.zerock.domain.UserVO" id="UserMap">
-<id property="userid" column="userid" />
-  	<result property="userpw" column="userpw" />
-  	<result property="userName" column="username" />
-  	<result property="userEmail" column="userEmail" />
-  	<result property="userPhone" column="userPhone" />
-  	<result property="CompanyRegistrationNumber" column="CompanyRegistrationNumber" />
-  	<result property="useradd" column="useradd" />	
-  	<result property="regdate" column="regdate" />
-  	<result property="updateDate" column="updateDate" />
-  	<result property="enabled" column="enabled" />
-  	<collection property="authList" resultMap="authMap" />
-  </resultMap>
-  <resultMap type="org.zerock.domain.AuthVO" id="authMap">
-  	<result property="userid" column="userid" />
-  	<result property="auth" column="auth" />
-</resultMap>
 
+
+	<!-- 개인회원  데이터 추가  -->
+	<insert id="insert">
+		INSERT INTO GH_User
+		(userid, userpw, username, userPhone, userEmail)
+		VALUES
+		(#{userid}, #{userpw}, #{userName}, #{userPhone}, #{userEmail})
+	</insert>
+
+	<insert id="insertAuth">
+		INSERT INTO GH_auth
+		(userid, auth)
+		VALUES
+		(#{userid}, #{auth})
+	</insert>
+	
+	<!-- 기업 데이터 추가  -->
+	<insert id="insertB">
+		INSERT INTO GH_User
+		(userid, userpw, username, userPhone, userEmail, CompanyRegistrationNumber)
+		VALUES
+		(#{userid}, #{userpw}, #{userName}, #{userPhone}, #{userEmail}, #{CompanyRegistrationNumber})
+	</insert>
+	
+	<!--  정보 수정  -->
+	<update id="update">
+	  UPDATE GH_User
+	  SET 
+	      userName = #{userName},
+	      userPhone = #{userPhone},
+	      userEmail = #{userEmail},
+	      useradd = #{useradd},
+	      updatedate = now()
+	  WHERE
+	      userid = #{userid}
+   </update>
+   
+   
+	<!-- 데이터 읽어오기   -->
+	  <select id="read" resultMap="userMap" >
+		  SELECT 
+			m.userid userid,
+			m.userpw userpw,
+			m.username username,
+			m.userPhone userPhone,
+			m.CompanyRegistrationNumber CompanyRegistrationNumber,
+			m.userEmail userEmail,
+			m.useradd useradd,
+			m.enabled enabled,
+			m.regdate regdate,
+			m.updateDate updateDate,
+			a.auth auth
+		  FROM 
+		    GH_User m LEFT JOIN GH_auth a ON m.userid = a.userid
+		  WHERE
+		   m.userid = #{userid} AND enabled = 1
+
+     </select>
+     
+ 
+
+	<!-- 책 662쪽 -->
+	  <resultMap type="org.zerock.domain.UserVO" id="userMap">
+	  	<id property="userid" column="userid" />
+	  	<result property="userpw" column="userpw" />
+	  	<result property="userName" column="username" />
+	  	<result property="userPhone" column="userPhone" />
+	  	<result property="userEmail" column="userEmail" />
+	  	<result property="CompanyRegistrationNumber" column="CompanyRegistrationNumber" />
+	  	<result property="useradd" column="useradd" />
+	  	<result property="regdate" column="regdate" />
+	  	<result property="updateDate" column="updateDate" />
+	  	<result property="enabled" column="enabled" />
+	  	<collection property="authList" resultMap="authMap" />
+	  </resultMap>
+	  <resultMap type="org.zerock.domain.AuthVO" id="authMap">
+	  	<result property="userid" column="userid" />
+	  	<result property="auth" column="auth" />
+	  </resultMap>
 </mapper>

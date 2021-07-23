@@ -176,13 +176,13 @@
 		var pwReg = /^[A-za-z0-9]{4,12}$/g;
 		passwordConfirm = false;
 		
-		if(pw1.length > 3){
-			messageElem.text("사용 가능 합니다");
+		if(!pwReg.test($("#userpw").val())){
+			messageElem.html("비밀번호는 4자 이상이여야 합니다.");
 		}
-		else if (!pwReg.test($("#userpw").val())){
-			messageElem.text("비밀번호는  4 ~ 12자 사이의 영문자 또는 숫자이어야 합니다.");
+		else if (pw1.length > 3){
+			messageElem.html("사용 가능 합니다");
 			
-		} 
+		}  
 		
 		if (pw1 != pw2) {
 			$("#password-message").text("패스워드가 일치하지 않습니다.");	
@@ -198,6 +198,13 @@
 		// submit 버튼 disable/enalbe 토글
 		toggleEnableSubmit();
 	});
+		
+		//비밀번호보기 
+		$('#eye').on("mousedown", function(){
+		    $('#userpw').attr('type',"text");
+		}).on('mouseup mouseleave', function() {
+		    $('#userpw').attr('type',"password");
+		});
 	function toggleEnableSubmit() {
 		if (passwordConfirm && canUseId) {
 			$("#signbtn").removeAttr("disabled");
@@ -239,7 +246,10 @@
 	                </div>
 	                <div class="form-group">
 	                	<label class="control-label" for="pw">비밀번호</label>
-	                    <input class="form-control" type="password" id="userpw" name="userpw"/>
+	                    <div class="input-group-append">
+			                 <input class="form-control" type="password" id="userpw" name="userpw" autocomplete="false" placeholder="비밀번호를 입력해주세요."/>
+							<button type="button" id="eye"><i class="fas fa-lock"></i></button>
+						</div>
 	                </div>
 	                		<small id="pw-message" class="form-text"></small>
 	                

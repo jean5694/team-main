@@ -13,7 +13,6 @@
 	
 	
 	<style type="text/css">
-	
 		*{ margin: 0;padding: 0;}
 		body{ background-color: #ececee;}
 		ul>li{ list-style: none}
@@ -41,7 +40,9 @@
 	
 	<script>
 		$(document).ready(function(){
-		  	$("input[type=checkbox]").prop("checked", false);
+			$(".fpmgBt2").css({"background-color": "#fff", "color": "#888"}).prop("disabled",true);
+			$("input[type=checkbox]").prop("checked",false);
+			
 		  	$("#checkall").click(function(){
 		
 		        if($("#checkall").prop("checked")){
@@ -168,7 +169,7 @@
             </ul>
             </div>
             <ul class="footBtwrap clearfix">
-                <li><button class="fpmgBt2" disabled="disabled" type="submit">동의</button></li>
+                <li><button class="fpmgBt2" type="submit">동의</button></li>
                 <li><button class="fpmgBt1" id="notBt" type="button">비동의</button></li>
             </ul>
         </form>
