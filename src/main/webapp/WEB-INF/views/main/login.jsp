@@ -89,18 +89,18 @@
 				<hr>
 				<div class="row justify-content-center text-center m-2">
 					<div class="col-2">
-						<a href="#">
-							<small>아이디찾기  </small>
+						<a href="${appRoot }/main/findId" target="_blank">
+							아이디찾기
 						</a>
 					</div>
 					<div class="col-2">
-						<a href="#">
-							<small>비밀번호찾기  </small>
+						<a href="${appRoot }/main/findPw" target="_blank">
+							비밀번호찾기
 						</a>
 					</div>
 					<div class="col-2">
 						<a href="${appRoot }/main/tos">
-							<small>회원가입 </small>
+							회원가입
 						</a>
 					</div>
 					

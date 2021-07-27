@@ -66,23 +66,10 @@
                 <h3 id="write_title">쪽지 보내기</h3>
                 <div class="data">
                 	<div class="align_cover">
-                	<!-- 	<p class="send_date">
-                			<span class="blind">받은 날짜 :</span>
-                			"2021-07-26 (월) 14:43"
-                		</p> -->
-                	
                 	</div>                
                 </div>
- 
-                <!-- 쪽지함 이동 버튼 영역 -->
-<!--                <ul class="top_buttons">
-                    <li><a href="#">수신 쪽지함</a></li>
-                    <li><a href="#">발신 쪽지함</a></li>
-                </ul>
-  -->
-                <!-- message_insert.php를 통해 DB의 message테이블에 저장 : 송신id는 get방식으로 -->
-           
-                        <div id="write_msg">
+                        <!-- <div id="write_msg">
+                        <form action="" method="post">
                             <ul>
                                 <li>
                                     <span class="col1">보내는 사람 : </span>
@@ -100,12 +87,29 @@
                                     <span class="col1">내용 : </span>
                                     <span class="col2"><textarea name="content"></textarea></span>
                                 </li>                                
-                            </ul>
-                            
-                            <!-- 서밋버튼 -->
-                            <input type="submit" value="보내기">
-                        </div>
+                            </ul> -->
+        <div class="row">
+		<div class="col-12">
+			<form action="" method="post" enctype="multipart/form-data">
+				<div class="form-group">
+					<label for="seinput">보내는 사람</label>
+					<input id="seinput" class="form-control" name="writer">
+				</div>
+				<div class="form-group">
+					<label for="rcinput">받는 사람</label>
+					<input id="rcinput" class="form-control" name="reader">
+				</div>
+				<div class="form-group">
+					<label for="input3">제목</label>
+					<input id="input3" class="form-control" name="title">
+				</div>
+				<div class="form-group">
+					<label for="coinput">내용</label>
+					<textarea id="coinput" class="form-control" name="content"></textarea>
+				</div>				
+					<input class="btn btn-primary" type="submit" value="보내기" />
                 </form>
+                </div>
             </div>
  
         </div>

@@ -17,6 +17,7 @@
 			height: 100%;
 	  	 	min-height: 100%;
 			}
+
 		.jumbotron{
 	        background-color: #fff;
 	        border: 1px solid #ddd;
@@ -44,6 +45,7 @@
 	<script type="text/javascript">
 	
 		$(document).ready(function(){
+
 			
 					var pwReg = /^[A-za-z0-9]{4,12}$/g;
 					
@@ -117,7 +119,7 @@
 							
 							
 						} else if(!idReg.test($("#userid1").val())){
-							messageElem.html("※ 다시 입력해주세요"+"<br>"+"아이디는 영문자로 시작하는 5 ~ 10자 영문자 또는 숫자이어야 합니다.");
+							messageElem.html("※ 다시 입력해주세요"+"<br>"+"아이디는 영문자로 시작하는 5자 이상의 영문자 또는 숫자이어야 합니다.");
 							
 						} else {
 							// 아이디가 입력되어있을 때
@@ -147,45 +149,44 @@
 					})
 					
 			
-				// 패스워드 확인
-				$("#userpw, #userpw2").keyup(function() {
-					var pw1 = $("#userpw").val();
-					var pw2 = $("#userpw2").val();
-					
-					var messageElem = $("#pw-message");
-					var pwReg = /^[A-za-z0-9]{4,12}$/g;
-					passwordConfirm = false;
-					
-					if(!pwReg.test($("#userpw").val())){
-						messageElem.html("비밀번호는 4자 이상이여야 합니다.");
-					}
-					else if (pw1.length > 3){
-						messageElem.html("사용 가능 합니다");
+					// 패스워드 확인
+					$("#userpw, #userpw2").keyup(function() {
+						var pw1 = $("#userpw").val();
+						var pw2 = $("#userpw2").val();
 						
-					} 
-					
-					if (pw1 != pw2) {
-						$("#password-message").text("패스워드가 일치하지 않습니다.");	
-					} else {
-						if (pw1 == "") {
-							$("#password-message").text("패스워드를 입력해주세요.");
-						} else {
-							passwordConfirm = true;
-							$("#password-message").empty();
+						var messageElem = $("#pw-message");
+						var pwReg = /^[A-za-z0-9]{4,12}$/g;
+						passwordConfirm = false;
+						
+						if(!pwReg.test($("#userpw").val())){
+							messageElem.html("비밀번호는 4자 이상이여야 합니다.");
 						}
+						else if (pw1.length > 3){
+							messageElem.html("사용 가능 합니다");
+							
+						}  
 						
-					}
-					// submit 버튼 disable/enalbe 토글
-					toggleEnableSubmit();
-				});
-					//비밀번호보기 
-					$('#eye').on("mousedown", function(){
-					    $('#userpw').attr('type',"text");
-					}).on('mouseup mouseleave', function() {
-					    $('#userpw').attr('type',"password");
+						if (pw1 != pw2) {
+							$("#password-message").text("패스워드가 일치하지 않습니다.");	
+						} else {
+							if (pw1 == "") {
+								$("#password-message").text("패스워드를 입력해주세요.");
+							} else {
+								passwordConfirm = true;
+								$("#password-message").empty();
+							}
+							
+						}
+						// submit 버튼 disable/enalbe 토글
+						toggleEnableSubmit();
 					});
-				
-					// 리무브 어트리 ,  생성 어트리 로 ->> 디스어블 끄고 켜고
+						
+						//비밀번호보기 
+						$('#eye').on("mousedown", function(){
+						    $('#userpw').attr('type',"text");
+						}).on('mouseup mouseleave', function() {
+						    $('#userpw').attr('type',"password");
+						});
 					function toggleEnableSubmit() {
 						if (passwordConfirm && canUseId) {
 							$("#signbtn").removeAttr("disabled");
@@ -193,7 +194,7 @@
 							$("#signbtn").attr("disabled", "disabled");
 						}
 					}
-				
+			
 				});
 			
 	</script>

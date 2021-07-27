@@ -43,13 +43,8 @@
 	</style>
 
 	<script type="text/javascript">
+	
 		$(document).ready(function(){
-			
-			//DB작업하고나서 아이디중복체크할때 사용가능하면 밑에 사용가능하다는 문구표시예정 
-			//var messageElem = $("#id-message");
-			//if(){
-				//messageElem.text("사용가능한 아이디 입니다.");					
-			//}
 			
 			$("#signbtn").click(function() {
 				
@@ -116,104 +111,102 @@
 					return false;
 				}
 			});
-		})
-			
-	$(function() {
-	var canUseId = false;
-	var passwordConfirm = false;
-	
-	// 아이디 중복 확인 
-	$("#id-dup-btn").click(function() {
-		var idVal = $("#userid1").val();
-		var messageElem = $("#id-message");
-		// 자바스크립트 정규표현식
-		var idReg = /^[A-za-z]+[A-za-z0-9]{4,9}$/g;
-		canUseId = false;
-		toggleEnableSubmit();
 		
-		if (idVal == "") {
-			// 아이디가 입력되지 않았을 때
-			messageElem.text("아이디를 입력해주세요.");
+			var canUseId = false;
+			var passwordConfirm = false;
+			
+			// 아이디 중복 확인 
+			$("#id-dup-btn").click(function() {
+				var idVal = $("#userid1").val();
+				var messageElem = $("#id-message");
+				// 자바스크립트 정규표현식
+				var idReg = /^[A-za-z]+[A-za-z0-9]{4,9}$/g;
+				canUseId = false;
+				toggleEnableSubmit();
+				
+				if (idVal == "") {
+					// 아이디가 입력되지 않았을 때
+					messageElem.text("아이디를 입력해주세요.");
+					
+					
+				} else if(!idReg.test($("#userid1").val())){
+					messageElem.html("※ 다시 입력해주세요"+"<br>"+"아이디는 영문자로 시작하는 5 ~ 10자 영문자 또는 숫자이어야 합니다.");
+					
+				} else {
+					// 아이디가 입력되어있을 때
+					var data = {id : idVal};
+					$.ajax({
+						type: "get",
+						url: "${appRoot }/main/dup",
+						data: data,
+						success: function (data) {
+							if (data == "success") {
+								console.log("사용 가능한 아이디");
+								canUseId = true;
+								messageElem.text("사용가능한 아이디 입니다.");			
+							} else if (data == "exist") {
+								console.log("사용 불가능한 아이디");
+								messageElem.text("이미 있는 아이디 입니다.");
+							}
+							
+							toggleEnableSubmit();
+						}, 
+						error: function() {
+							console.log("아이디 중복 체크 실패");
+						}
+						
+					});
+				}
+			})
 			
 			
-		} else if(!idReg.test($("#userid1").val())){
-			messageElem.html("※ 다시 입력해주세요"+"<br>"+"아이디는 영문자로 시작하는 5 ~ 10자 영문자 또는 숫자이어야 합니다.");
-			
-		} else {
-			// 아이디가 입력되어있을 때
-			var data = {id : idVal};
-			$.ajax({
-				type: "get",
-				url: "${appRoot }/main/dup",
-				data: data,
-				success: function (data) {
-					if (data == "success") {
-						console.log("사용 가능한 아이디");
-						canUseId = true;
-						messageElem.text("사용가능한 아이디 입니다.");			
-					} else if (data == "exist") {
-						console.log("사용 불가능한 아이디");
-						messageElem.text("이미 있는 아이디 입니다.");
+			// 패스워드 확인
+			$("#userpw, #userpw2").keyup(function() {
+				var pw1 = $("#userpw").val();
+				var pw2 = $("#userpw2").val();
+				
+				var messageElem = $("#pw-message");
+				var pwReg = /^[A-za-z0-9]{4,12}$/g;
+				passwordConfirm = false;
+				
+				if(!pwReg.test($("#userpw").val())){
+					messageElem.html("비밀번호는 4자 이상이여야 합니다.");
+				}
+				else if (pw1.length > 3){
+					messageElem.html("사용 가능 합니다");
+					
+				}  
+				
+				if (pw1 != pw2) {
+					$("#password-message").text("패스워드가 일치하지 않습니다.");	
+				} else {
+					if (pw1 == "") {
+						$("#password-message").text("패스워드를 입력해주세요.");
+					} else {
+						passwordConfirm = true;
+						$("#password-message").empty();
 					}
 					
-					toggleEnableSubmit();
-				}, 
-				error: function() {
-					console.log("아이디 중복 체크 실패");
 				}
-				
+				// submit 버튼 disable/enalbe 토글
+				toggleEnableSubmit();
 			});
-		}
-	})
-	
-	
-	// 패스워드 확인
-	$("#userpw, #userpw2").keyup(function() {
-		var pw1 = $("#userpw").val();
-		var pw2 = $("#userpw2").val();
-		
-		var messageElem = $("#pw-message");
-		var pwReg = /^[A-za-z0-9]{4,12}$/g;
-		passwordConfirm = false;
-		
-		if(!pwReg.test($("#userpw").val())){
-			messageElem.html("비밀번호는 4자 이상이여야 합니다.");
-		}
-		else if (pw1.length > 3){
-			messageElem.html("사용 가능 합니다");
-			
-		}  
-		
-		if (pw1 != pw2) {
-			$("#password-message").text("패스워드가 일치하지 않습니다.");	
-		} else {
-			if (pw1 == "") {
-				$("#password-message").text("패스워드를 입력해주세요.");
-			} else {
-				passwordConfirm = true;
-				$("#password-message").empty();
+				
+				//비밀번호보기 
+				$('#eye').on("mousedown", function(){
+				    $('#userpw').attr('type',"text");
+				}).on('mouseup mouseleave', function() {
+				    $('#userpw').attr('type',"password");
+				});
+			function toggleEnableSubmit() {
+				if (passwordConfirm && canUseId) {
+					$("#signbtn").removeAttr("disabled");
+				} else {
+					$("#signbtn").attr("disabled", "disabled");
+				}
 			}
-			
-		}
-		// submit 버튼 disable/enalbe 토글
-		toggleEnableSubmit();
-	});
-		
-		//비밀번호보기 
-		$('#eye').on("mousedown", function(){
-		    $('#userpw').attr('type',"text");
-		}).on('mouseup mouseleave', function() {
-		    $('#userpw').attr('type',"password");
-		});
-	function toggleEnableSubmit() {
-		if (passwordConfirm && canUseId) {
-			$("#signbtn").removeAttr("disabled");
-		} else {
-			$("#signbtn").attr("disabled", "disabled");
-		}
-	}
 	
-});
+		});
 	</script>
 </head>
 <body>

@@ -42,7 +42,28 @@
 	      userid = #{userid}
    </update>
    
+   <!-- 비밀번호 수정  -->
+   <update id="modifyPassword">
+      UPDATE GH_User
+      SET userpw = #{userpw}
+      WHERE userid = #{userid}
+   </update>
    
+   
+   
+   <!--  권한 지우기  -->
+	<delete id="removeAuth">
+		DELETE FROM  GH_auth
+		WHERE userid = #{userid}
+	</delete>
+	
+	<!-- 회원 탈퇴  -->
+	<delete id="remove">
+		DELETE FROM  GH_User
+		WHERE userid = #{userid}
+	</delete>
+	
+	
 	<!-- 데이터 읽어오기   -->
 	  <select id="read" resultMap="userMap" >
 		  SELECT 
@@ -65,7 +86,36 @@
      </select>
      
  
-
+	 <!-- 재경 아이디 찾기 -->
+		 <select id="findId" resultMap="userMap">
+			SELECT 
+			 *
+			FROM GH_User
+			WHERE username = #{userName} AND userphone = #{userPhone}
+		 </select>
+	
+		 <!-- 재경 비밀번호 찾기 -->
+		 <select id="findPw" resultMap="userMap">
+			SELECT 
+			 *
+			FROM GH_User
+			WHERE userid = #{userid}
+		 </select>
+	
+		 <!-- 재경 비밀번호 변경 -->
+		 <update id="updatePw" >
+			UPDATE GH_User SET userpw = #{userpw} where userid = #{userid}
+		 </update>
+		 
+		 <!-- 쪽지 보내기 -->
+		 <insert id="msgsend">
+		 	INSERT INTO GH_Message
+		 	(writer,reader,content)
+		 	VALUES
+		 	(#{writer}, #{reader}, #{content})
+		 </insert>
+	 
+	 
 	<!-- 책 662쪽 -->
 	  <resultMap type="org.zerock.domain.UserVO" id="userMap">
 	  	<id property="userid" column="userid" />

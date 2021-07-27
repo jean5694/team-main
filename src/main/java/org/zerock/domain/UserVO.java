@@ -7,12 +7,12 @@ import lombok.Data;
 
 @Data
 public class UserVO {
-	
+
 	private String userid;
 	private String userpw;
 	private String userName;
-	private String userEmail;
 	private String userPhone;
+	private String userEmail;
 	private String CompanyRegistrationNumber;
 	private String useradd;
 	private Date regdate;
@@ -20,9 +20,8 @@ public class UserVO {
 	private boolean enabled;
 	
 	
-	private String userpwck;
+	//private String userpwck;
 	
 	//유저에있는권한들 
 	private List<AuthVO> authList;
-	
 }

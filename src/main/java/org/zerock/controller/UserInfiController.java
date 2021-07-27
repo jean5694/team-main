@@ -8,7 +8,7 @@ import lombok.extern.log4j.Log4j;
 @Controller
 @Log4j
 
-public class UserInfoController {
+public class UserInfiController {
 
 	
 	//비밀번호 확인하기

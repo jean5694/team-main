@@ -25,16 +25,16 @@
 #write_msg span{display: inline-block;}
  
 /* 라벨영역 가로사이즈 */
-#write_msg .col1 {width: 150px;}
+#write_msg .col1 {text-align:center;width: 150px;}
  
 /* 각 줄마다 아래쪽에 경계선 그리기 */
 #write_msg li{border-bottom: solid 1px #dddddd; padding: 12px;}
  
 /* input요소의 사이즈 */
-#write_msg input {width: 500px; height: 25px;}
+#write_msg input {width: 800px; height: 25px;}
  
 /* textarea의 사이즈*/
-#write_msg textarea {width: 500px; height: 150px;}
+#write_msg textarea {width: 300px; height: 400px;}
  
 /* 내용의 라벨글씨가 아래쪽에 배치되기에 이를 수정하기 위해 absolute position 사용*/
 #write_msg #textarea {position: relative; height: 158px;}
@@ -67,8 +67,8 @@
         <div id="main_content">
             <div id="message_box">
                 <h3 id="write_title">에베베베</h3>
-                <div class="data">
-                	<div class="align_cover">
+<!--                 <div class="data">
+                	<div class="align_cover"> -->
                 		<%-- <td>
 						<fmt:formatDate pattern="yyyy-MM-dd" value="${board.regdate }"/>
 						</td> --%>
@@ -76,48 +76,41 @@
                 			<span class="blind">받은 날짜 :</span>
                 			"2021-07-26 (월) 14:43"
                 		</p> -->
-                		<button type="button" class="btn" onClick="location.href='${appRoot}/main/sendmail'">답장</button>
-				<ul class="top_buttons">
-                    <li><a href="#">수신 쪽지함</a></li>
-                    <li><a href="#">발신 쪽지함</a></li>
-                </ul>
+				<div class="top_buttons">
+				<tr>
+				<td><button type="button" class="btn" onClick="location.href='${appRoot}/main/sendmail'">답장</button></td>
+                <td><button type="button" class="btn" onClick="location.href='${appRoot}/main/mgreceive'">수신 쪽지함</button></td>
+                <td><button type="button" class="btn" onClick="location.href='${appRoot}/main/mgsend'">발신 쪽지함</button></td>
+                </tr>
                 	
                 	</div>                
                 </div>
- 
-                <!-- 쪽지함 이동 버튼 영역 -->
-<!--                <ul class="top_buttons">
-                    <li><a href="#">수신 쪽지함</a></li>
-                    <li><a href="#">발신 쪽지함</a></li>
-                </ul>
-  -->
-      <%--           <!-- message_insert.php를 통해 DB의 message테이블에 저장 : 송신id는 get방식으로 -->
-           <form action="./message_insert.php?send_id=<?=$userid?>" method="post" name="message_form"> --%>
-                        <div id="write_msg">
-                            <ul>
-                                <li>
-                                    <span class="col1">보낸 사람 : </span>
-                                    <span class="col2"><input type="text" value="" readonly></span>
-                                </li>
-                                <li>
-                                    <span class="col1">받는 사람 : </span>
-                                    <span class="col2"><input type="text" value="" readonly></span>
-                                </li>
-                                <li>
-                                    <span class="col1">제목 : </span>
-                                    <span class="col2"><input type="text" name="subject"></span>
-                                </li>
-                                <li>
-                                    <span class="col1">내용 : </span>
-                                    <span class="col2"><textarea type="text" name="content"></textarea></span>
-                                </li>                                
-                            </ul>
-
-                        </div>
+            </div>
+            
+        <div class="row">
+		<div class="col-12">
+			
+				<div class="form-group">
+					<label for="seinput">보내는 사람</label>
+					<input id="seinput" class="form-control" name="writer">
+				</div>
+				<div class="form-group">
+					<label for="rcinput">받는 사람</label>
+					<input id="rcinput" class="form-control" name="reader">
+				</div>
+				<div class="form-group">
+					<label for="input3">제목</label>
+					<input id="input3" class="form-control" name="title">
+				</div>
+				<div class="form-group">
+					<label for="coinput">내용</label>
+					<textarea id="coinput" class="form-control" name="content"></textarea>
+				</div>				
                 </form>
             </div>
+            </div>
  
-        </div>
+
  
     </section>
  

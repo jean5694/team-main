@@ -19,7 +19,11 @@
 		<nb:navbar></nb:navbar>			
 		<h1>메인페이지입니다 </h1>
 	</div>
-		
 
+<c:if test="${not empty qweasd}">
+<script type="text/javascript">
+alert("${qweasd}");
+</script>
+</c:if>		
 </body>
 </html>
