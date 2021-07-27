@@ -43,6 +43,16 @@ public class MainController {
 		
 //		return "/main/home";
 	}
+	@RequestMapping("/sendmail")
+    public void mail( ) {
+   	}
+   	@RequestMapping("/mailinfo")
+   	public void mailinfo() {
+   		
+   	}@RequestMapping("/test")
+   	public void test() {
+   		
+   	}
 	
 	
 	
@@ -150,7 +160,7 @@ public class MainController {
 	
 
 	
-	//비밀번호확인 후 정보페이지로 이동 
+	//비밀번호확인 후 정보페이지로 이동
 	@PostMapping("/myinfos")
 	@PreAuthorize("isAuthenticated()")
 	public String checkpwMethod(Principal principal,Model model, String userpwck) {
