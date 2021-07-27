@@ -91,16 +91,16 @@
 		<div class="col-12">
 			
 				<div class="form-group">
-					<label for="seinput">보내는 사람</label>
-					<input id="seinput" class="form-control" name="writer">
+					<label for="wrinput">보내는 사람</label>
+					<input id="wrinput" class="form-control" name="writer">
 				</div>
 				<div class="form-group">
-					<label for="rcinput">받는 사람</label>
-					<input id="rcinput" class="form-control" name="reader">
+					<label for="reinput">받는 사람</label>
+					<input id="reinput" class="form-control" name="reader">
 				</div>
 				<div class="form-group">
-					<label for="input3">제목</label>
-					<input id="input3" class="form-control" name="title">
+					<label for="tiinput3">제목</label>
+					<input id="tiinput3" class="form-control" name="title">
 				</div>
 				<div class="form-group">
 					<label for="coinput">내용</label>
