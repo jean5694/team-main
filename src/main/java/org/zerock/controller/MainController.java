@@ -358,7 +358,7 @@ public class MainController {
             if (success) {
                rttr.addFlashAttribute("message", "메시지가 발송 되었습니다. ");              
           } else {
-             rttr.addFlashAttribute("message", "수신자가 존재하지 않습니다. ");
+        	   rttr.addFlashAttribute("message", "수신자가 존재하지 않습니다. ");
           }
             return "redirect:/main/mgsend";           
         }
@@ -383,7 +383,9 @@ public class MainController {
             boolean success = messageservice.mesinsert(vo);
             if (success) {
             	rttr.addFlashAttribute("message", "메시지가 발송 되었습니다. ");           	
-    		}
+    		} else {
+         	   rttr.addFlashAttribute("message", "수신자가 존재하지 않습니다. ");
+            }
            // 이부분이다 설명을 듣고 싶으면 mgreceive.jsp로 가라
             return "redirect:/main/mgreceive";           
         }
