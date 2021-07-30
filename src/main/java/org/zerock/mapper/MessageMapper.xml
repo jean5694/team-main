@@ -4,21 +4,41 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.zerock.mapper.MessageMapper">
-
-
-       
-  <insert id="mesinsert"  useGeneratedKeys="true" >
-  	INSERT INTO GH_Message (writer, reader, content)
-  	VALUES (#{writer}, #{reader}, #{content})
-  </insert>
-
-
-  <select id="getListSend" resultType ="org.zerock.domain.MessageVO">
-  SELECT * FROM GH_Message WHERE writer = #{writer} order by mno desc
-  </select>
-  
-  <select id="getListReceive" resultType ="org.zerock.domain.MessageVO">
-  SELECT * FROM GH_Message WHERE reader = #{writer} order by mno desc
-  </select>
+	
+	
+	       
+	<insert id="mesinsert"  useGeneratedKeys="true" >
+		INSERT INTO GH_Message (writer, reader, content)
+	  	VALUES (#{writer}, #{reader}, #{content})
+	</insert>
+	
+	
+	<select id="getListSend" resultType ="org.zerock.domain.MessageVO">
+	  	SELECT * FROM GH_Message WHERE writer = #{writer} order by mno desc
+	</select>
+	  
+	<select id="getListReceive" resultType ="org.zerock.domain.MessageVO">
+	  	SELECT * FROM GH_Message WHERE reader = #{writer} order by mno desc
+	</select>
     
+  	<!-- <select id="read" resultMap="messageMap">
+  		SELECT 
+		mno mno,
+		writer writer,
+		reader reader,
+		content content,
+		regdate regdate
+        
+  			
+		FROM GH_Message 
+  		
+		WHERE writer = #{writer}
+  	</select>  
+  
+  	<resultMap type="org.zerock.domain.MessageVO" id="messageMap">
+	  	<result property="mno" column="mno" />
+	  	<result property="writer" column="writer" />
+	  	<result property="reader" column="reader" />
+	  	<result property="regdate" column="regdate" />
+	</resultMap> -->
 </mapper>

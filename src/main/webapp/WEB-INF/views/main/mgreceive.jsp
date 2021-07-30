@@ -13,6 +13,20 @@
 <style>
     #td { vertical-align : middle; }
 </style>
+
+<script>
+$(function() {
+	$("#callsec").on("show.bs.modal", function() {
+		$("#readerTh").val("");
+		$("#contentTh").val("");
+		$("#sendbtnTh").prop("disabled", true);
+		
+		$("#contentTh").keyup(function(){
+			$("#sendbtnTh").prop("disabled", false);	
+		})
+	});
+})
+</script>
 <title>Insert title here</title>
 </head>
 <body>
@@ -39,9 +53,8 @@
 		</ul>
 	</nav>
 </div>
-<body>
 
-    <h3>받는 쪽지함</h3>
+    <h3>받은 쪽지함</h3>
     <table class="table table-striped">
         <thead>
             <tr style="text-align :center">
@@ -54,6 +67,25 @@
         </thead>
         <tbody>
             <c:forEach items="${listReceive }" var="message" varStatus="status">
+                <script>
+					$(document).ready(function(){
+						
+						$("#sendbtn${status.count }").click(function() {
+							$('#call${status.count }').modal("hide");
+						})
+						
+						$("#callse${status.count }").on("show.bs.modal", function(){
+							console.log("답장하기");
+							$("#content${status.count }").val("");							
+							$("#sendbtnTw${status.count }").prop("disabled",true);
+							
+							$("#content${status.count }").keyup(function(){
+								$("#sendbtnTw${status.count }").prop("disabled",false);
+							})
+						
+						})
+					});
+				</script>
                 <tr>
                     <td id="td"style="text-align :center"><!-- ${message.mno} 확인용 mno -->  ${status.count }</td>
                     <td id="td">
@@ -68,7 +100,7 @@
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-										<h5 class="modal-title" id="exampleModalLabel">보낸 쪽지함</h5>
+										<h5 class="modal-title" id="exampleModalLabel">받은 쪽지함</h5>
 										<button type="button" class="close" data-dismiss="modal"
 											aria-label="Close">
 											<span aria-hidden="true">&times;</span>
@@ -98,14 +130,6 @@
 						</div>
 					</div>
 				</div>
-				
-                <script>
-					$(document).ready(function(){
-						$("#sendbtn${status.count }").click(function() {
-							$('#call${status.count }').modal("hide");
-						})
-					})
-				</script>
 					<div class="modal fade" id="callse${status.count }" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
@@ -130,12 +154,12 @@
 
 										<div class="form-group">
 											<label for="content" class="col-form-label">내용</label>
-											<textarea class="form-control"  id="content" name="content"></textarea>
+											<textarea class="form-control"  id="content${status.count }" name="content"></textarea>
 										</div>
 									 
 										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-											<button id="sendbtn" type="submit" class="btn btn-light" >답장하기</button>
+											<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+											<button id="sendbtnTw${status.count }" type="submit" class="btn btn-secondary" >답장하기</button>
 										</div>		
 									</form>					
 								</div>
@@ -156,7 +180,7 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<form action="${appRoot }/main/mgreceive" method="post">
+					<form action="${appRoot }/main/mgsend" method="post">
 						<div class="form-group">
 							<label for="writer" class="col-form-label">보내는 사람</label>
 							<input type="text" readonly class="form-control" id="writer" value="${uservo.userid}" name="writer">
@@ -164,17 +188,17 @@
 	
 						<div class="form-group">
 							<label for="reader" class="col-form-label">받는 사람</label>
-							<input type="text"  class="form-control" id="reader" name="reader">
+							<input type="text"  class="form-control" id="readerTh" name="reader">
 						</div>
 	
 						<div class="form-group">
 							<label for="content" class="col-form-label">내용</label>
-							<textarea class="form-control"  id="content" name="content"></textarea>
+							<textarea class="form-control"  id="contentTh" name="content"></textarea>
 						</div>
 					 
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-							<button id="sendbtn" type="submit" class="btn btn-light" >답장하기</button>
+							<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+							<button id="sendbtnTh" type="submit" class="btn btn-secondary" >답장하기</button>
 						</div>		
 					</form>					
 				</div>

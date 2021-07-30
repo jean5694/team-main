@@ -17,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -97,13 +96,11 @@ public class MainController {
 	//아이디 중복 확인
 	@GetMapping("/dup")
 	@ResponseBody
-	public ResponseEntity<String> duplicate(String userid) {
+	public ResponseEntity<String> duplicate(String id) {
 		log.info("duplicate method");
 
 		// 서비스 일 시키고
-		UserVO vo = service.read(userid);
-		log.info(userid);
-		
+		UserVO vo = service.read(id);
 
 		if (vo == null) {
 			return new ResponseEntity<>("success", HttpStatus.OK);
@@ -302,7 +299,6 @@ public class MainController {
 
 		UserVO user2 = service.findPw(vo);
 
-		
 		log.info(vo);
 		log.info(user2);
 
@@ -336,6 +332,10 @@ public class MainController {
 		}
 		return "main/findPw";	
 	}
+	
+	 
+      
+      
 
         @GetMapping("/mgsend")
     	@PreAuthorize("isAuthenticated()")
@@ -356,13 +356,13 @@ public class MainController {
             log.info("listsendPost method");
             boolean success = messageservice.mesinsert(vo);
             if (success) {
-            	rttr.addFlashAttribute("message", "메시지가 발송 되었습니다. ");           	
-    		} else {
-    			rttr.addFlashAttribute("message", "수신자가 존재하지 않습니다. ");
-    		}
+               rttr.addFlashAttribute("message", "메시지가 발송 되었습니다. ");              
+          } else {
+             rttr.addFlashAttribute("message", "수신자가 존재하지 않습니다. ");
+          }
             return "redirect:/main/mgsend";           
         }
-       
+        
         @GetMapping("/mgreceive")
     	@PreAuthorize("isAuthenticated()")
 		public void listrecevie(Principal principal, MessageVO vo, Model model) {
@@ -387,7 +387,6 @@ public class MainController {
            // 이부분이다 설명을 듣고 싶으면 mgreceive.jsp로 가라
             return "redirect:/main/mgreceive";           
         }
-        
 
 	
 	

@@ -16,6 +16,20 @@
     #td { vertical-align : middle; }
 </style>
 <title>Insert title here</title>
+<script>
+$(function() {
+	$("#callsec").on("show.bs.modal", function() {
+		$("#readerTh").val("");
+		$("#contentTh").val("");
+		$("#sendbtnTh").prop("disabled", true);
+		
+		$("#contentTh").keyup(function(){
+			$("#sendbtnTh").prop("disabled", false);	
+		})
+	})
+});
+</script>
+
 </head>
 <body>
 <div class="container">
@@ -41,8 +55,6 @@
 		</ul>
 	</nav>
 </div>
-<body>
-
 				<h3>보낸 쪽지함</h3>
 				<table class="table table-striped">
 					<thead>

@@ -45,7 +45,7 @@
 
 							<div class="form-group">
 								<label for="reader" class="col-form-label">받는 사람</label>
-								<input type="text" readonly class="form-control" id="reader" name = "reader" value = "${messagevo.writer}">
+								<input type="text" readonly class="form-control" id="reader" name = "reader" value = "${boardvo.writer}">
 							</div>
 
 							<div class="form-group">
