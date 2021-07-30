@@ -1,7 +1,7 @@
 package org.zerock.controller;
 
 import java.security.Principal;
-import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,15 +15,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.domain.MessageVO;
 import org.zerock.domain.UserVO;
 import org.zerock.security.domain.CustomUser;
+import org.zerock.service.MessageService;
 import org.zerock.service.UserService;
 
 
@@ -40,6 +43,9 @@ public class MainController {
 
 	@Setter(onMethod_ = @Autowired)
 	private UserService service;
+	
+	@Setter(onMethod_ = @Autowired)
+	private MessageService messageservice;
 	
 	
 	//메인 홈 
@@ -91,11 +97,13 @@ public class MainController {
 	//아이디 중복 확인
 	@GetMapping("/dup")
 	@ResponseBody
-	public ResponseEntity<String> duplicate(String id) {
+	public ResponseEntity<String> duplicate(String userid) {
 		log.info("duplicate method");
 
 		// 서비스 일 시키고
-		UserVO vo = service.read(id);
+		UserVO vo = service.read(userid);
+		log.info(userid);
+		
 
 		if (vo == null) {
 			return new ResponseEntity<>("success", HttpStatus.OK);
@@ -294,6 +302,7 @@ public class MainController {
 
 		UserVO user2 = service.findPw(vo);
 
+		
 		log.info(vo);
 		log.info(user2);
 
@@ -327,36 +336,59 @@ public class MainController {
 		}
 		return "main/findPw";	
 	}
-	@RequestMapping("/sendmail")
-	public void sendmail() {
-	}
-	@RequestMapping("/mailinfo")
-	public void mailinfo() {
-	}
-	@RequestMapping("/test")
-	public void test() {
-	}
-	@RequestMapping("/mgreceive")
-	public void mgreceive() {
-	}
-	@RequestMapping("/mgsend")
-	public void mgsend() {
-	}
-	@RequestMapping(value="")
-    public ModelAndView formTag(HttpServletRequest request){
-        ModelAndView mv = new ModelAndView();
-        String writer = request.getParameter("writer");
-        String reader = request.getParameter("reader");
-        String content  = request.getParameter("content");    
+
+        @GetMapping("/mgsend")
+    	@PreAuthorize("isAuthenticated()")
+		public void listsend(Principal principal, MessageVO vo, Model model) {
+		log.info("mgsend");
+		vo.setWriter(principal.getName());
+		List<MessageVO> list = messageservice.getListSend(vo);
+		model.addAttribute("listsend", list);
+		
+		log.info("mgsendprincipal method");
+        log.info(principal.getName());
+        UserVO uservo = service.read(principal.getName());
+		model.addAttribute("uservo", uservo);
+        }
         
-        return mv;
-    }
-//	writer;
-//	private String reader;
-//	private String content;
-//	private Date regdate;
+        @PostMapping("/mgsend")       
+        public String listsendPost(MessageVO vo, RedirectAttributes rttr) {
+            log.info("listsendPost method");
+            boolean success = messageservice.mesinsert(vo);
+            if (success) {
+            	rttr.addFlashAttribute("message", "메시지가 발송 되었습니다. ");           	
+    		} else {
+    			rttr.addFlashAttribute("message", "수신자가 존재하지 않습니다. ");
+    		}
+            return "redirect:/main/mgsend";           
+        }
+       
+        @GetMapping("/mgreceive")
+    	@PreAuthorize("isAuthenticated()")
+		public void listrecevie(Principal principal, MessageVO vo, Model model) {
+		log.info("mgsend");
+		vo.setWriter(principal.getName());
+		List<MessageVO> list = messageservice.getListReceive(vo);
+		model.addAttribute("listReceive", list);
+
+		log.info("mgsendprincipal method");
+        log.info(principal.getName());
+        UserVO uservo = service.read(principal.getName());
+		model.addAttribute("uservo", uservo);
+        }
+        
+        @PostMapping("/mgreceive")
+        public String listreceviePost(MessageVO vo, RedirectAttributes rttr) {
+            log.info("listreceviePost method");
+            boolean success = messageservice.mesinsert(vo);
+            if (success) {
+            	rttr.addFlashAttribute("message", "메시지가 발송 되었습니다. ");           	
+    		}
+           // 이부분이다 설명을 듣고 싶으면 mgreceive.jsp로 가라
+            return "redirect:/main/mgreceive";           
+        }
+        
+
+	
+	
 }
-
-	
-	
-

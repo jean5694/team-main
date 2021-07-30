@@ -49,6 +49,13 @@ $(function() {
 		       			 <a class="nav-link" href="${appRoot }/main/mypage">마이페이지 </a>
 		     		 </li>
 		     	</sec:authorize> 
+		     	<sec:authorize access="isAuthenticated()">
+		         <li class="nav-item">
+<%-- 		         	<sec:authentication property="principal.user" var="user" />
+ --%>		         	
+		       		<a class="nav-link" href="${appRoot }/main/mgreceive?writer=${user.userid}">쪽지함 </a>
+		     	 </li>
+		     	</sec:authorize> 
 			</ul>
 		</nav>
 </div>
@@ -96,7 +103,7 @@ $(function() {
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
           <li><a class="dropdown-item" href="#">자유게시판  </a></li>
-          <li><a class="dropdown-item" href="#">중고마켓  </a></li>
+          <li><a class="dropdown-item" href="${appRoot }/board/usedBoard">중고마켓  </a></li>
           <li><hr class="dropdown-divider"></li>
         </ul>
       </li>

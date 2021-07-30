@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zerock.domain.AuthVO;
+import org.zerock.domain.MessageVO;
 import org.zerock.domain.UserVO;
 import org.zerock.mapper.UserMapper;
 

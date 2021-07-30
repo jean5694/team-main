@@ -1,5 +1,6 @@
 package org.zerock.service;
 
+import org.zerock.domain.MessageVO;
 import org.zerock.domain.UserVO;
 
 public interface UserService {
@@ -28,11 +29,13 @@ public interface UserService {
 
 	//비밀번호 찾기
 	UserVO findPw(UserVO vo);
+	
 
 	//비밀번호 변경
 	boolean updatePw (UserVO vo);
 
 	//이메일발송
 	public void sendEmail(UserVO vo, String div) throws Exception;
+
 
 }

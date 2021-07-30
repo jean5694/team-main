@@ -3,18 +3,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="nb" tagdir="/WEB-INF/tags/nb" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <% request.setCharacterEncoding("utf-8"); %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <%@ include file="/WEB-INF/subModules/bootstrapHeader.jsp" %>
+<style>
+    #td { vertical-align : middle; }
+</style>
 <title>Insert title here</title>
 </head>
 <body>
 <div class="container">
 <nb:navbar></nb:navbar>
-	
 <div class="d-flex justify-content-center p-0">
 	<nav class="navbar navbar-expand-sm navbar-light">
 		<ul  class="navbar-nav mr-auto text-center"> 
@@ -28,60 +31,161 @@
 	       			 	<a class="nav-link" href="${appRoot }/main/mgsend">보낸쪽지함 </a>	     			
 	     			</font>
 	     	</li>	
+	     	<li class="nav-item">
+	     			<font size="4px">
+	       			 	<a class="nav-link" type = "button" data-toggle="modal" data-target="#callsec"> 쪽지 보내기 </a>	     			
+	     			</font>
+	     	</li>
 		</ul>
 	</nav>
 </div>
 <body>
-    <h2>받은 쪽지함</h2>
+
+    <h3>받는 쪽지함</h3>
     <table class="table table-striped">
         <thead>
-            <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일</th>
-                <%--
-                <th>수정일</th>
-                 --%>
+            <tr style="text-align :center">
+                <th style="width: 8%">번호</th>
+                <th style="width: 65%">내용</th>
+                <th style="width: 15%">보낸사람</th>
+                <th style="width: 12%">작성일</th>
+
             </tr>
         </thead>
         <tbody>
-            <c:forEach items="${list }" var="board">
+            <c:forEach items="${listReceive }" var="message" varStatus="status">
                 <tr>
-                    <td>${board.bno }</td>
-                    <td>
-
-                    <c:url value="/board/get" var="getUrl">
-                        <c:param name="bno" value="${board.bno }" />
-                        <c:param name="pageNum" value="${pageMaker.cri.pageNum }" />
-                        <c:param name="amount" value="${pageMaker.cri.amount }" />
-                        <c:param name="type" value="${pageMaker.cri.type }"    />
-                        <c:param name="keyword" value="${pageMaker.cri.keyword }" />
-                    </c:url>
-
-                    <a href="${getUrl}">
-                        ${board.title } 
-                    </a>
-                    <c:if test="${board.replyCnt > 0 }">
-                        <i class="far fa-comment-dots"></i> ${board.replyCnt }
-                    </c:if>
-
-
-                    </td>
-                    <td>${board.writerName }</td>
-                    <td>
-      <%--                   <fmt:formatDate pattern="yyyy-MM-dd" value="${board.regdate }"/> --%>
-                    </td>
-                    <%--
-                    <td>
-                        <fmt:formatDate pattern="yyyy-MM-dd" value="${board.updateDate }"/>
-                    </td>
-                     --%>
+                    <td id="td"style="text-align :center"><!-- ${message.mno} 확인용 mno -->  ${status.count }</td>
+                    <td id="td">
+                    <a type="button" class="nav-link active" id="cnbtn1" data-toggle="modal" data-target="#call${status.count }">
+					${message.content }
+					</a>
+                    </td> 
+                    <td id="td"style="text-align :center">${message.writer }</td>
+                    <td id="td"style="text-align :center"><fmt:formatDate pattern="yyyy-MM-dd [hh:mm]" value="${message.regdate }"/></td>
                 </tr>
+                <div class="modal fade" id="call${status.count }" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLabel">보낸 쪽지함</h5>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+								</div>
+								<div class="modal-body">
+										<div class="form-group">
+											<label for="writer" class="col-form-label">보내는 사람</label>
+											<input type="text" readonly class="form-control" id="writer" value="${message.writer}" name="writer">
+										</div>
+		
+										<div class="form-group">
+											<label for="reader" class="col-form-label">받는 사람</label>
+											<input type="text" readonly class="form-control" id="reader" name="reader" value="${message.reader}">
+										</div>
+		
+										<div class="form-group">
+											<label for="content" class="col-form-label">내용</label>
+											<textarea class="form-control" readonly id="content" name="content">${message.content}</textarea>
+										</div>
+						 
+								<div class="modal-footer">
+									<button type="button" class="btn btn-light" data-dismiss="modal" id="close1">Close</button>
+									<button id="sendbtn${status.count }" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#callse${status.count }">답장하기</button>
+								</div>	
+						</div>
+						</div>
+					</div>
+				</div>
+				
+                <script>
+					$(document).ready(function(){
+						$("#sendbtn${status.count }").click(function() {
+							$('#call${status.count }').modal("hide");
+						})
+					})
+				</script>
+					<div class="modal fade" id="callse${status.count }" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">쪽지 전송하기</h5>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<form action="${appRoot }/main/mgreceive" method="post">
+										<div class="form-group">
+											<label for="writer" class="col-form-label">보내는 사람</label>
+											<input type="text" readonly class="form-control" id="writer" value="${uservo.userid}" name="writer">
+										</div>
+
+										<div class="form-group">
+											<label for="reader" class="col-form-label">받는 사람</label>
+											<input type="text" readonly class="form-control" id="reader" name="reader" value="${message.writer}">
+										</div>
+
+										<div class="form-group">
+											<label for="content" class="col-form-label">내용</label>
+											<textarea class="form-control"  id="content" name="content"></textarea>
+										</div>
+									 
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											<button id="sendbtn" type="submit" class="btn btn-light" >답장하기</button>
+										</div>		
+									</form>					
+								</div>
+							</div>
+						</div>
+					</div>
             </c:forEach>
         </tbody>
     </table>
-</div>
+    <div class="modal fade" id="callsec" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">쪽지 전송하기</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<form action="${appRoot }/main/mgreceive" method="post">
+						<div class="form-group">
+							<label for="writer" class="col-form-label">보내는 사람</label>
+							<input type="text" readonly class="form-control" id="writer" value="${uservo.userid}" name="writer">
+						</div>
+	
+						<div class="form-group">
+							<label for="reader" class="col-form-label">받는 사람</label>
+							<input type="text"  class="form-control" id="reader" name="reader">
+						</div>
+	
+						<div class="form-group">
+							<label for="content" class="col-form-label">내용</label>
+							<textarea class="form-control"  id="content" name="content"></textarea>
+						</div>
+					 
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button id="sendbtn" type="submit" class="btn btn-light" >답장하기</button>
+						</div>		
+					</form>					
+				</div>
+			</div>
+		</div>
+	</div>								
+<c:if test="${not empty message}">
+<script type="text/javascript">
+alert("${message}");
+</script>
+</c:if>
 </div>
 </body>
 </html>

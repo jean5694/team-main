@@ -1,7 +1,7 @@
 package org.zerock.mapper;
 
 import org.zerock.domain.AuthVO;
-import org.zerock.domain.BoardVO;
+import org.zerock.domain.MessageVO;
 import org.zerock.domain.UserVO;
 
 public interface UserMapper {
@@ -37,5 +37,5 @@ public interface UserMapper {
 	// 재경 비밀번호 변경
 	public int updatePw(UserVO vo);
 	
-	public int msgsend(BoardVO vo);
+	public int msgsend(MessageVO vo);
 }
