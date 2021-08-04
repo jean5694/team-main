@@ -1,17 +1,20 @@
 package org.zerock.controller;
 
 import java.security.Principal;
-
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.domain.Criteria;
 import org.zerock.domain.MessageVO;
+import org.zerock.domain.PageDTO;
 import org.zerock.domain.UserVO;
 import org.zerock.service.MessageService;
 import org.zerock.service.UserService;
@@ -54,7 +57,6 @@ public class BoardController {
                 return "redirect:/board/usedBoard";
            
         }
-        
         
       
 

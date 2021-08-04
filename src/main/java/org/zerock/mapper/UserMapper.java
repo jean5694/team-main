@@ -15,6 +15,7 @@ public interface UserMapper {
 	
 	//데이터조회하기 
 	public UserVO read(String userid);
+	public MessageVO read(long mno);
 	
 	//데이터 수정하기 
 	public int update(UserVO vo);
@@ -38,4 +39,6 @@ public interface UserMapper {
 	public int updatePw(UserVO vo);
 	
 	public int msgsend(MessageVO vo);
+	
+	
 }

@@ -209,6 +209,9 @@ public class UserServiceImpl implements UserService {
 			System.out.println("메일발송 실패 : " + e);
 		}
 	}
+
+
 	
 	
+
 }

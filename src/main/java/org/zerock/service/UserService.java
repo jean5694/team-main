@@ -1,5 +1,8 @@
 package org.zerock.service;
 
+import java.util.List;
+
+import org.zerock.domain.Criteria;
 import org.zerock.domain.MessageVO;
 import org.zerock.domain.UserVO;
 
@@ -36,6 +39,6 @@ public interface UserService {
 
 	//이메일발송
 	public void sendEmail(UserVO vo, String div) throws Exception;
-
+	
 
 }

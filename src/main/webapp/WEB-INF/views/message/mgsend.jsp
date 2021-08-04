@@ -39,12 +39,12 @@ $(function() {
 		<ul  class="navbar-nav mr-auto text-center"> 
 			<li class="nav-item">
 	       			 <font size="4px">
-		       			 <a class="nav-link" href="${appRoot }/main/mgreceive">받은쪽지함 </a>
+		       			 <a class="nav-link" href="${appRoot }/message/mgreceive">받은쪽지함 </a>
 	       			 </font>
 	     	</li>
 	     	<li class="nav-item">
 	     			<font size="4px">
-	       			 	<a class="nav-link" href="${appRoot }/main/mgsend">보낸쪽지함 </a>	     			
+	       			 	<a class="nav-link" href="${appRoot }/message/mgsend">보낸쪽지함 </a>	     			
 	     			</font>
 	     	</li>	
 	     	<li class="nav-item">
@@ -53,8 +53,14 @@ $(function() {
 	     			</font>
 	     	</li>
 		</ul>
+		
 	</nav>
 </div>
+<form method="GET" action="${appRoot }/message/search">
+	     		<label>제목 검색</label>
+	     			<input type="text" name="searchValue">
+	     			<input type="submit" value="검색">
+	     	</form>
 				<h3>보낸 쪽지함</h3>
 				<table class="table table-striped">
 					<thead>
@@ -79,6 +85,8 @@ $(function() {
 								<td id="td" style="text-align: center">${message.reader }</td>
 								<td id="td" style="text-align: center"><fmt:formatDate pattern="yyyy-MM-dd [hh:mm]" value="${message.regdate }" /></td>
 							</tr>
+							
+						<!-- 모달 -->
 		                <div class="modal fade" id="call${status.count }" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
@@ -90,25 +98,31 @@ $(function() {
 										</button>
 								</div>
 								<div class="modal-body">
+								<form method="post" action="${appRoot }/message/delete">
+										<div class="form-group" style="display : none;">
+											<label for="mno" class="col-form-label">번호</label>
+											<input type="text" readonly class="form-control" id="mno${status.count }" value="${message.mno }" name="mno">
+										</div>
 										<div class="form-group">
 											<label for="writer" class="col-form-label">보내는 사람</label>
-											<input type="text" readonly class="form-control" id="writer" value="${uservo.userid}" name="writer">
+											<input type="text" readonly class="form-control" id="writer${status.count }" value="${uservo.userid}" name="writer">
 										</div>
 		
 										<div class="form-group">
 											<label for="reader" class="col-form-label">받는 사람</label>
-											<input type="text" readonly class="form-control" id="reader" name="reader" value="${message.reader}">
+											<input type="text" readonly class="form-control" id="reader${status.count }" name="reader" value="${message.reader}">
 										</div>
 		
 										<div class="form-group">
 											<label for="content" class="col-form-label">내용</label>
-											<textarea class="form-control" readonly id="content" name="content">${message.content}</textarea>
+											<textarea class="form-control" readonly id="content${status.count }" name="content">${message.content}</textarea>
 										</div>
 								 
 										<div class="modal-footer">
 											<button type="button" class="btn btn-secondary" data-dismiss="modal" id="close1">Close</button>
+											<button id="mesdelbtn${status.count }" type="submit" class="btn btn-danger mr-auto">삭제</button>
 										</div>
-			
+								</form>
 								</div>
 								</div>
 							</div>
@@ -116,6 +130,8 @@ $(function() {
 						</c:forEach>
 					</tbody>
 				</table>
+</div>
+
 	<div class="modal fade" id="callsec" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -127,27 +143,25 @@ $(function() {
 					</button>
 				</div>
 				<div class="modal-body">
-					<form action="${appRoot }/main/mgsend" method="post">
+					<form action="${appRoot }/message/mgsend" method="post">
 						<div class="form-group">
 							<label for="writer" class="col-form-label">보내는 사람</label>
-							<input type="text" readonly class="form-control" id="writer" value="${uservo.userid}" name="writer">
+							<input type="text" readonly class="form-control" id="writerTh" value="${uservo.userid}" name="writer">
 						</div>
 	
 						<div class="form-group">
 							<label for="reader" class="col-form-label">받는 사람</label>
-							<input type="text"  class="form-control" id="reader" name="reader">
-							<small id="id-message" class="form-text"></small>
-							
+							<input type="text"  class="form-control" id="readerTh" name="reader">
 						</div>
 	
 						<div class="form-group">
 							<label for="content" class="col-form-label">내용</label>
-							<textarea class="form-control"  id="content" name="content"></textarea>
+							<textarea class="form-control"  id="contentTh" name="content"></textarea>
 						</div>
 					 
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-							<button id="sendbtn" type="submit" class="btn btn-light" >답장하기</button>
+							<button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+							<button id="sendbtnTh" type="submit" class="btn btn-secondary" >보내기</button>
 						</div>		
 					</form>					
 				</div>
@@ -156,32 +170,12 @@ $(function() {
 	</div>
 <c:if test="${not empty message}">
 <script>
-alert("${message}");
-
+	alert("${message}");
 	$(document).ready(function() {
-		
-		$("#11").click(function() {
-			if($("#writer").val()==""){
-				alert("보내는 사람을 입력해주세요.");
-				$("#writer").focus();
-				return false;
-			}
-			if($("#reader").val()==""){
-				alert("없는 아이디입니다.");
-				$("#reader").focus();
-				return false;
-		}
-			if($("#content").val()==""){
-				alert("내용을 입력해주세요.");
-				$("#content").focus();
-				return false;	
-			}
-	})
-	
 	var canUseId = false;
 	
-	$("#sendbtn").click(function() {
-		var idVal = $("#reader").val();
+	$("#sendbtnTh").click(function(){
+		var idVal = $("#readerTh").val();
 		var messageElem = $("#id-message");
 		canUseId = false;
 		
@@ -197,24 +191,15 @@ alert("${message}");
 					if (data == "success") {
 						console.log("전송 가능한 아이디");
 						canUseId = true;
-						messageElem.text("전송 가능한 아이디 입니다.");
 					} else if (data == "exist") {
 						console.log("전송 불가능한 아이디");
-						messageElem.text("전송 불가능한 아이디 입니다.");
 					}
 					
 				}
 			})
 		}
-		
 		})
 	})
-	
-	
-	
-
-	
-	
 </script>
 </c:if>
 </div>

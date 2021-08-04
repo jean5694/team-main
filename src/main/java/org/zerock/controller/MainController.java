@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +15,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.domain.Criteria;
 import org.zerock.domain.MessageVO;
 import org.zerock.domain.UserVO;
 import org.zerock.security.domain.CustomUser;
@@ -46,10 +50,21 @@ public class MainController {
 	@Setter(onMethod_ = @Autowired)
 	private MessageService messageservice;
 	
+	//MainListService mainlistservice;
+	
 	
 	//메인 홈 
 	@RequestMapping("/home")
 	public void main() {
+		
+		//List<listVo> storeList = listService.스토어게시글 불러오는 쿼리 
+		//List<listVo> joongGoList = listService.중고나라게시글 불러오는 쿼리(market)
+		//List<listVo> openBoardList = listService.자유게시판 불러오는 쿼리
+		
+//		request.setAttribute("storeList", storeList);
+		
+		
+		
 		log.info("home method");
 		
 //		return "/main/home";
@@ -332,64 +347,4 @@ public class MainController {
 		}
 		return "main/findPw";	
 	}
-	
-	 
-      
-      
-
-        @GetMapping("/mgsend")
-    	@PreAuthorize("isAuthenticated()")
-		public void listsend(Principal principal, MessageVO vo, Model model) {
-		log.info("mgsend");
-		vo.setWriter(principal.getName());
-		List<MessageVO> list = messageservice.getListSend(vo);
-		model.addAttribute("listsend", list);
-		
-		log.info("mgsendprincipal method");
-        log.info(principal.getName());
-        UserVO uservo = service.read(principal.getName());
-		model.addAttribute("uservo", uservo);
-        }
-        
-        @PostMapping("/mgsend")       
-        public String listsendPost(MessageVO vo, RedirectAttributes rttr) {
-            log.info("listsendPost method");
-            boolean success = messageservice.mesinsert(vo);
-            if (success) {
-               rttr.addFlashAttribute("message", "메시지가 발송 되었습니다. ");              
-          } else {
-        	   rttr.addFlashAttribute("message", "수신자가 존재하지 않습니다. ");
-          }
-            return "redirect:/main/mgsend";           
-        }
-        
-        @GetMapping("/mgreceive")
-    	@PreAuthorize("isAuthenticated()")
-		public void listrecevie(Principal principal, MessageVO vo, Model model) {
-		log.info("mgsend");
-		vo.setWriter(principal.getName());
-		List<MessageVO> list = messageservice.getListReceive(vo);
-		model.addAttribute("listReceive", list);
-
-		log.info("mgsendprincipal method");
-        log.info(principal.getName());
-        UserVO uservo = service.read(principal.getName());
-		model.addAttribute("uservo", uservo);
-        }
-        
-        @PostMapping("/mgreceive")
-        public String listreceviePost(MessageVO vo, RedirectAttributes rttr) {
-            log.info("listreceviePost method");
-            boolean success = messageservice.mesinsert(vo);
-            if (success) {
-            	rttr.addFlashAttribute("message", "메시지가 발송 되었습니다. ");           	
-    		} else {
-         	   rttr.addFlashAttribute("message", "수신자가 존재하지 않습니다. ");
-            }
-           // 이부분이다 설명을 듣고 싶으면 mgreceive.jsp로 가라
-            return "redirect:/main/mgreceive";           
-        }
-
-	
-	
 }

@@ -5,7 +5,9 @@
 
 <mapper namespace="org.zerock.mapper.MessageMapper">
 	
-	
+	<delete id="mesdelete">
+		DELETE FROM GH_Message WHERE mno = #{mno}
+	</delete>
 	       
 	<insert id="mesinsert"  useGeneratedKeys="true" >
 		INSERT INTO GH_Message (writer, reader, content)
@@ -20,25 +22,17 @@
 	<select id="getListReceive" resultType ="org.zerock.domain.MessageVO">
 	  	SELECT * FROM GH_Message WHERE reader = #{writer} order by mno desc
 	</select>
-    
-  	<!-- <select id="read" resultMap="messageMap">
-  		SELECT 
-		mno mno,
-		writer writer,
-		reader reader,
-		content content,
-		regdate regdate
-        
-  			
-		FROM GH_Message 
-  		
-		WHERE writer = #{writer}
-  	</select>  
-  
-  	<resultMap type="org.zerock.domain.MessageVO" id="messageMap">
-	  	<result property="mno" column="mno" />
-	  	<result property="writer" column="writer" />
-	  	<result property="reader" column="reader" />
-	  	<result property="regdate" column="regdate" />
-	</resultMap> -->
+	
+	<select id="getSearchMessageList" resultType ="org.zerock.domain.MessageVO">
+	  	SELECT mno,
+	  	       writer,
+	  	       reader,
+	  	       content,
+	  	       regdate
+	  	  FROM GH_Message 
+	  	 WHERE content LIKE CONCAT('%',#{content},'%') 
+	  	 ORDER BY mno DESC
+	</select>
+	
+	
 </mapper>

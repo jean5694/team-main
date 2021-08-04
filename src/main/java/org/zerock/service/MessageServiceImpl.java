@@ -2,6 +2,7 @@ package org.zerock.service;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zerock.domain.MessageVO;
@@ -14,6 +15,8 @@ import lombok.Setter;
 @Service
 public class MessageServiceImpl implements MessageService {
 
+
+	
     @Setter(onMethod_ = @Autowired)
     private MessageMapper mapper;
     
@@ -33,7 +36,12 @@ public class MessageServiceImpl implements MessageService {
         
         return cnt == 1;
     }
-
+    
+    //쪽지 삭제
+    @Override
+    public void mesdelete(MessageVO vo) {
+    	mapper.mesdelete(vo);
+    }
 	
 
 	@Override
@@ -47,5 +55,12 @@ public class MessageServiceImpl implements MessageService {
 	public List<MessageVO> getListReceive(MessageVO vo) {
 		return mapper.getListReceive(vo);
 	}
-
+	//쪽지 검색
+	@Override
+	public List<MessageVO> getSearchMessageList(String searchValue) {
+		
+		return mapper.getSearchMessageList(searchValue);
+	}
+	
+	
 }

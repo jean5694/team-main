@@ -53,7 +53,7 @@ $(function() {
 		         <li class="nav-item">
 <%-- 		         	<sec:authentication property="principal.user" var="user" />
  --%>		         	
-		       		<a class="nav-link" href="${appRoot }/main/mgreceive?writer=${user.userid}">쪽지함 </a>
+		       		<a class="nav-link" href="${appRoot }/message/mgreceive?writer=${user.userid}">쪽지함 </a>
 		     	 </li>
 		     	</sec:authorize> 
 			</ul>

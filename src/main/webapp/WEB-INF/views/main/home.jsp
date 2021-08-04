@@ -12,13 +12,65 @@
 
 <%@ include file="/WEB-INF/subModules/bootstrapHeader.jsp" %>
 
-<title>메인 페이지</title>
+
+<title>고 집</title>
 </head>
 <body>
 	<div class="container">
 		<nb:navbar></nb:navbar>			
-		<h1>메인페이지입니다 </h1>
+  <h1>스토어</h1>
+		<div class="card">
+  <img alt="iphone" width="150" src="${appRoot }/resources/img/iphone.jpg">
+  <div class="card-body">
+    <h5 class="card-title">의 자</h5>
+    <p class="card-text">단단하다.</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">An item</li>
+    <li class="list-group-item">A second item</li>
+    <li class="list-group-item">A third item</li>
+  </ul>
+  <div class="card-body">
+    <a href="#" class="card-link">스토어</a>
+  </div>
+</div>
+<hr>
+  <h1>중고마켓</h1>
+<div class="card" style="width: 70rem;">
+  <img alt="samsung" width="150" src="${appRoot }/resources/img/samsung.jpg">
+  <div class="card-body">
+    <h5 class="card-title">책 상</h5>
+    <p class="card-text">튼튼하다.</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">An item</li>
+    <li class="list-group-item">A second item</li>
+    <li class="list-group-item">A third item</li>
+  </ul>
+  <div class="card-body">
+    <a href="#" class="card-link">중고마켓</a>
+  </div>
+</div>
+<hr>
+<h1>자유게시판</h1>
+<ul class="list-group">
+  <li class="list-group-item disabled" aria-disabled="true">자유게시판</li>
+  <li class="list-group-item">1.에베베</li>
+  <li class="list-group-item">1.에베베</li>
+  <li class="list-group-item">1.에베베</li>
+  <li class="list-group-item">1.에베베</li>
+</ul>
+<hr>
+<h1>공지사항</h1>
+<ul class="list-group">
+  <li class="list-group-item disabled" aria-disabled="true">공지사항</li>
+  <li class="list-group-item">1.에베베</li>
+  <li class="list-group-item">1.에베베</li>
+  <li class="list-group-item">1.에베베</li>
+  <li class="list-group-item">1.에베베</li>
+</ul>
 	</div>
+	
 
 <c:if test="${not empty qweasd}">
 <script type="text/javascript">
