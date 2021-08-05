@@ -11,8 +11,4 @@ public class MessageVO {
     private String content;
     private Date regdate;
 
-    
-
-    
-    
 }

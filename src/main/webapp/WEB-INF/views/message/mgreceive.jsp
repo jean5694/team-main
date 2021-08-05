@@ -259,7 +259,38 @@
 				</div>
 			</div>
 		</div>
-	</div>								
+	</div>	
+<!--  pagenation -->
+<div>
+<nav aria-label="Page navigation example">
+  <ul id="list-pagenation1" class="pagination justify-content-center">
+    <c:if test="${pageMaker.prev }">
+       <li class="page-item">
+         <a class="page-link" href="${pageMaker.startPage - 1 }">Previous</a>
+       </li>
+     </c:if>
+   
+   <c:forEach begin="1" end="${total / 10 }" var="num">
+       <li class="page-item"><a class="page-link"  href="?page=${num }">${num }</a></li>
+   </c:forEach>
+
+   <c:if test="${pageMaker.next }">
+       <li class="page-item">
+         <a class="page-link" href="${pageMaker.endPage + 1 }">Next</a>
+       </li>
+   </c:if>
+  </ul>
+</nav>
+
+<div style="display: none;">
+   <form id="actionForm" action="${appRoot }/message/list" method="get">
+      <input name="pageNum" value="${pageMaker.cri.pageNum }" /> 
+      <input name="amount" value="${pageMaker.cri.amount }" />
+   </form>
+</div>
+
+
+</div>							
 <c:if test="${not empty message}">
 <script>
 	alert("${message}");

@@ -14,13 +14,32 @@
 	  	VALUES (#{writer}, #{reader}, #{content})
 	</insert>
 	
+	<select id="getTotalListSend" resultType ="int">
+	  	SELECT count(*) 
+	  	FROM GH_Message 
+	  	WHERE writer = #{writer} 
+	</select>
 	
 	<select id="getListSend" resultType ="org.zerock.domain.MessageVO">
-	  	SELECT * FROM GH_Message WHERE writer = #{writer} order by mno desc
+	  	SELECT * 
+	  	FROM GH_Message 
+	  	WHERE writer = #{vo.writer} 
+	  	order by mno desc
+	  	LIMIT #{page}, 10
+	</select>
+	
+	<select id="getTotalListReceive" resultType ="org.zerock.domain.MessageVO">
+	  	SELECT count(*) 
+	  	FROM GH_Message 
+	  	WHERE writer = #{writer} 
 	</select>
 	  
 	<select id="getListReceive" resultType ="org.zerock.domain.MessageVO">
-	  	SELECT * FROM GH_Message WHERE reader = #{writer} order by mno desc
+	  	SELECT * 
+	  	FROM GH_Message 
+	  	WHERE reader = #{vo.writer} 
+	  	order by mno desc
+	  	LIMIT #{page}, 10
 	</select>
 	
 	<select id="getSearchMessageList" resultType ="org.zerock.domain.MessageVO">
@@ -34,5 +53,21 @@
 	  	 ORDER BY mno DESC
 	</select>
 	
+	<!-- <select id="getListWithPaging" resultType="org.zerock.domain.MessageVO">
+
+    SELECT 
+    	m.mno mno,
+    	m.writer writer,
+    	m.reader reader
+     FROM GH_Message m LEFT JOIN GH_User u on mno = userid
+     ORDER BY mno DESC
+     LIMIT #{from}, #{amount}
+     
+
+  </select>
+  
+  <select id="getTotalCount" resultType="int">
+  SELECT COUNT(*) FROM GH_Message
+  </select> -->
 	
 </mapper>

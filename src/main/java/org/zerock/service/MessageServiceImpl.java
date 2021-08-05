@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.zerock.domain.Criteria;
 import org.zerock.domain.MessageVO;
 import org.zerock.domain.UserVO;
 import org.zerock.mapper.MessageMapper;
@@ -45,22 +46,44 @@ public class MessageServiceImpl implements MessageService {
 	
 
 	@Override
-	public List<MessageVO> getListSend(MessageVO vo) {
-		return mapper.getListSend(vo);
+	public List<MessageVO> getListSend(MessageVO vo, Integer page) {
+		return mapper.getListSend(vo, page);
 	}
-
+	
+	@Override
+	public int getTotalListSend(MessageVO vo) {
+		return mapper.getTotalListSend(vo);
+	}
 
 
 	@Override
-	public List<MessageVO> getListReceive(MessageVO vo) {
-		return mapper.getListReceive(vo);
+	public List<MessageVO> getListReceive(MessageVO vo, Integer page) {
+		return mapper.getListReceive(vo, page);
 	}
+	
+	@Override
+	public int getTotalListReceive(MessageVO vo) {
+		return mapper.getTotalListReceive(vo);
+	}
+	
+	
+	
+	
 	//쪽지 검색
 	@Override
 	public List<MessageVO> getSearchMessageList(String searchValue) {
 		
 		return mapper.getSearchMessageList(searchValue);
 	}
+	
+//	@Override
+//	public List<MessageVO> getList(Criteria cri) {
+//		return mapper.getListWithPaging(cri);
+//	}
+//	
+//	public int getTotal(Criteria cri) {
+//		return mapper.getTotalCount(cri);
+//	}
 	
 	
 }

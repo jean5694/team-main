@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.domain.Criteria;
 import org.zerock.domain.MessageVO;
+import org.zerock.domain.PageDTO;
 import org.zerock.domain.UserVO;
 import org.zerock.service.MessageService;
 import org.zerock.service.UserService;
@@ -32,21 +34,35 @@ public class MessageController {
 	@Setter(onMethod_ = @Autowired)
 	private MessageService messageservice;
 	
+//	@GetMapping("/list")
+//	public void message(@ModelAttribute("cri") Criteria cri, Model model) {
+//		log.info("page method");
+//			int total = messageservice.getTotal(cri);
+//			
+//			List<MessageVO> list = messageservice.getList(cri);
+//			
+//			model.addAttribute("list", list);
+//			model.addAttribute("pageMaker", new PageDTO(cri, total));
+//	}
+//	
 	
 	
 	
 	@GetMapping("/mgsend")
 	@PreAuthorize("isAuthenticated()")
-	public void listsend(Principal principal, MessageVO vo, Model model) {
-	log.info("mgsend");
-	vo.setWriter(principal.getName());
-	List<MessageVO> list = messageservice.getListSend(vo);
-	model.addAttribute("listsend", list);
-	
-	log.info("mgsendprincipal method");
-    log.info(principal.getName());
-    UserVO uservo = service.read(principal.getName());
-	model.addAttribute("uservo", uservo);
+	public void listsend(Principal principal, MessageVO vo, Model model, @RequestParam(value = "page", defaultValue = "1")Integer page) {
+		log.info("mgsend");
+		vo.setWriter(principal.getName());
+		List<MessageVO> list = messageservice.getListSend(vo, page);
+		int total = messageservice.getTotalListSend(vo);
+		
+		model.addAttribute("total", total);
+		model.addAttribute("listsend", list);
+		
+		log.info("mgsendprincipal method");
+	    log.info(principal.getName());
+	    UserVO uservo = service.read(principal.getName());
+		model.addAttribute("uservo", uservo);
 	
     }
     
@@ -73,12 +89,16 @@ public class MessageController {
     	model.addAttribute("uservo", uservo);
     }
     
+    
     @GetMapping("/mgreceive")
 	@PreAuthorize("isAuthenticated()")
-	public void listrecevie(Principal principal, MessageVO vo, Model model) {
+	public void listrecevie(Principal principal, MessageVO vo, Model model, @RequestParam(value = "page", defaultValue = "1")Integer page) {
 	log.info("mgsend");
 	vo.setWriter(principal.getName());
-	List<MessageVO> list = messageservice.getListReceive(vo);
+	List<MessageVO> list = messageservice.getListReceive(vo, page);
+	int total = messageservice.getTotalListSend(vo);
+	
+	model.addAttribute("total", total);
 	model.addAttribute("listReceive", list);
 
 	log.info("mgsendprincipal method");
