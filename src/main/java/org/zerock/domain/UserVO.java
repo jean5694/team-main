@@ -24,4 +24,6 @@ public class UserVO {
 	
 	//유저에있는권한들 
 	private List<AuthVO> authList;
+	
+	private AuthVO auth;
 }
