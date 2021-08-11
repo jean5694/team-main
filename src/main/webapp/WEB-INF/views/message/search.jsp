@@ -59,9 +59,17 @@ $(function() {
 	     	<form method="GET" action="${appRoot }/message/search">
 	     		<label>제목 검색</label>
 	     			<input type="text" name="searchValue">
+	     			<input type="hidden" name="type" value="${type }"/>
 	     			<input type="submit" value="검색">
 	     	</form>
-				<h3>보낸 쪽지함</h3>
+	     		<c:choose>
+	     			<c:when test="${type eq 'receive'}">
+	     				<h3>받은쪽지함</h3>
+	     			</c:when>
+	     			<c:otherwise>
+	     				<h3>보낸쪽지함</h3>
+	     			</c:otherwise>
+	     		</c:choose>
 				<table class="table table-striped">
 					<thead>
 						<tr style="text-align: center">
