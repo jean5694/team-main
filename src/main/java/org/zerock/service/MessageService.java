@@ -12,7 +12,7 @@ public interface MessageService {
 	public List<MessageVO> getListReceive(MessageVO vo, Integer page);
 	
 	public void mesdelete(MessageVO vo);
-	public List<MessageVO> getSearchMessageList(String searchValue);
+	public List<MessageVO> getSearchMessageList(String receivesearchValue);
 	
 	//리스트
 //	public List<MessageVO> getList(Criteria cri);

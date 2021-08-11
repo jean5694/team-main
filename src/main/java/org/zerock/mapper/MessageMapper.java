@@ -17,13 +17,8 @@ public interface MessageMapper {
     public List<MessageVO> getListReceive(@Param("vo") MessageVO vo, @Param("page") Integer page);
     
 	public void mesdelete(MessageVO vo);
-	public List<MessageVO> getSearchMessageList(String searchValue);
+	public List<MessageVO> getSearchMessageList(String receivesearchValue);
 
-
-	
-//	public List<MessageVO> getListWithPaging(Criteria cri);
-//	
-//	public int getTotalCount(Criteria cri);
 	
 	
 

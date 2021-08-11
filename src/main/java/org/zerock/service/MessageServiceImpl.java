@@ -71,10 +71,12 @@ public class MessageServiceImpl implements MessageService {
 	
 	//쪽지 검색
 	@Override
-	public List<MessageVO> getSearchMessageList(String searchValue) {
+	public List<MessageVO> getSearchMessageList(String receivesearchValue) {
 		
-		return mapper.getSearchMessageList(searchValue);
+		return mapper.getSearchMessageList(receivesearchValue);
 	}
+	
+
 	
 //	@Override
 //	public List<MessageVO> getList(Criteria cri) {

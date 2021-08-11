@@ -80,15 +80,18 @@ public class MessageController {
     
     @GetMapping("/search")
     @PreAuthorize("isAuthenticated()")
-    public void searchMessage(@RequestParam("searchValue") String searchValue, Principal principal, Model model) {
+    public void sendsearchMessage(@RequestParam("searchValue") String searchValue, @RequestParam("type") String type, Principal principal, Model model) {
     	log.info("searchMessage method");
     	
     	List<MessageVO> list = messageservice.getSearchMessageList(searchValue);
     	model.addAttribute("listsend", list);
         UserVO uservo = service.read(principal.getName());
+        model.addAttribute("type", type);
     	model.addAttribute("uservo", uservo);
     }
     
+    
+   
     
     @GetMapping("/mgreceive")
 	@PreAuthorize("isAuthenticated()")

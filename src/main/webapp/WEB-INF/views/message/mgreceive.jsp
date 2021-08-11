@@ -57,10 +57,11 @@
 </div>
 <!-- 쪽지함 검색기능 -->
 <form method="GET" action="${appRoot }/message/search">
-	     		<label>제목 검색</label>
-	     			<input type="text" name="searchValue">
-	     			<input type="submit" value="검색">
-	     	</form>
+   		<label>제목 검색</label>
+		<input type="text" name="searchValue">
+		<input type="hidden" name="type" value="receive"/>
+		<input type="submit" value="검색">
+</form>
     <h3>받은 쪽지함</h3>
     <table class="table table-striped">
         <thead>
