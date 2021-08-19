@@ -135,7 +135,7 @@
           updatedate,
           cbcategory
      FROM C_board
-    ORDER BY regdate ASC
+    ORDER BY regdate DESC
     LIMIT 5
     </select>
 	  
