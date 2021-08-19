@@ -9,6 +9,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@ include file="/WEB-INF/subModules/bootstrapHeader.jsp" %>
+
+<title>고집 로그인</title>
+
 <style type="text/css">
 
 	html, body {
@@ -32,11 +36,9 @@
      	height:2px;
      }
 </style>
-<%@ include file="/WEB-INF/subModules/bootstrapHeader.jsp" %>
-
-<title>고집 로그인</title>
 
 <script type="text/javascript">
+
 		$(document).ready(function(){
 			
 			$("#lgbtn").on("click", function(){
@@ -56,11 +58,13 @@
 				
 			
 		})
-	</script>
+</script>
 </head>
 <body style="background-color: #ececee;">
+
 	<div class="container " >
         <div class="jumbotron" style="background-color:#fff;">
+        
             <div class="text-center p-5">
                   <a href="${appRoot }/main/home">
                   <img alt="gohome" width="150" src="${appRoot }/resources/img/gohomelogo.png"></a>
@@ -87,6 +91,7 @@
 					</form>
 				</div>
 				<hr>
+				
 				<div class="row justify-content-center text-center m-2">
 					<div class="col-2">
 						<a href="${appRoot }/main/findId" target="_blank">
@@ -103,8 +108,8 @@
 							회원가입
 						</a>
 					</div>
-					
 				</div>
+				
            </div>
       </div>
 </body>

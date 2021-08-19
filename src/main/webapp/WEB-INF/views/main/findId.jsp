@@ -138,7 +138,7 @@
 
 				<div class="col-2">
 					<a href="${appRoot }/main/login">
-						로그인
+						로그인  
 					</a>
 				</div>
 						
