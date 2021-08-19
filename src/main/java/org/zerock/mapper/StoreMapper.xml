@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="org.zerock.mapper.StoreMapper">
+
+
+	<!-- 카트담기 -->
+	<insert id="addCart">
+		INSERT INTO cart 
+		(userid, pno, cartstock)
+		VALUES 
+		(#{userid}, #{pno}, #{cartstock})
+	</insert>
+
+
+	<!-- 카트조회  -->
+	<select id="listCart" resultType ="org.zerock.domain.CartVO">
+
+	select 
+	c.cno as cno, 
+	c.userid as userid, 
+	s.pno as pno, 
+	u.userid as userid, 
+	c.cartstock as cartstock, 
+	s.title as title, 
+	s.detail as detail, 
+	s.price as price, 
+	(price * cartstock) money 
+	from GH_User u, S_product s, cart c where u.userid = c.userid and s.pno = c.pno and c.userid = #{userid} 
+	order by c.cno
+
+	</select>
+	
+	<!-- 장바구니 전체금액 -->
+	<select id = "sumMoney" resultType = "int">
+	SELECT NVL(SUM(price * cartstock), 0) money 
+	FROM cart c, S_product s 
+	WHERE c.pno = s.pno and c.userid = #{userid}
+	</select>
+
+	<!-- 장바구니에 동일한 상품이 있는지 확인 -->
+	<select id = "countCart" resultType = "int">
+	SELECT COUNT(*)
+	FROM cart
+	WHERE userid = #{userid}
+	AND pno = #{pno}
+	</select>
+
+	<!-- 장바구니에 동일한 상품이 있는지 확인되면 수정 (이건 잘모르겠다.)-->
+	<update id = "updateCart">
+	UPDATE cart
+	SET cartstock = cartstock + #{cartstock}
+	WHERE userid = #{userid}
+	AND pno = #{pno}
+	</update>
+
+	<!-- 장바구니 수정 -->
+	<update id = "modifyCart">
+	UPDATE cart
+	SET cartstock = #{cartstock}
+	WHERE userid = #{userid}
+	AND pno = #{pno}
+	</update>
+
+
+	<!-- 장바구니 삭제 -->
+ 	<delete id ="cartdelete">
+	 DELETE FROM cart WHERE cno = #{cno}
+	</delete>
+
+
+	<!-- 주문 상세 정보 --> 
+<!-- 	<insert id="orderDetail">
+	INSERT INTO order_detail(orderno, pno, cartstock)
+	     SELECT  #{orderno}, pno, cartstock
+	         FROM cart   
+	</insert>  -->
+
+
+</mapper>
