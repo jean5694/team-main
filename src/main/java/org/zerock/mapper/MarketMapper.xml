@@ -137,8 +137,8 @@
 	       mregdate,
 	       maddress
 	  FROM market
-	 ORDER BY mregdate ASC
-	 LIMIT 8;
+	 ORDER BY mregdate DESC
+	 LIMIT 4;
 	 </select>
 
 

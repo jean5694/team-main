@@ -211,6 +211,7 @@ public class MarketServiceImpl implements MarketService {
 
 		}
 
+	//메인중고마켓 게시글조회
 	@Override
 	public List<MarketVO> getMarketMainList() {
 		

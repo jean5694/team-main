@@ -39,7 +39,7 @@ public class MarketController {
 	private UserService userservice;	
 	
 	
-        @GetMapping("/main")
+        @GetMapping("/home")
         public void market(@ModelAttribute("cri") Criteria cri, Model model) {
             log.info("market method");
        		int total = service.getTotal(cri);    
