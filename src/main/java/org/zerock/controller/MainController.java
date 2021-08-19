@@ -3,35 +3,27 @@ package org.zerock.controller;
 import java.security.Principal;
 import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.zerock.domain.Criteria;
-import org.zerock.domain.MessageVO;
+import org.zerock.domain.CBoardVO;
+import org.zerock.domain.MarketVO;
+import org.zerock.domain.NoticeVO;
+import org.zerock.domain.SProductVO;
 import org.zerock.domain.UserVO;
-import org.zerock.security.domain.CustomUser;
-import org.zerock.service.MessageService;
+import org.zerock.service.CBoardService;
+import org.zerock.service.CsService;
+import org.zerock.service.MarketService;
+import org.zerock.service.SProductService;
 import org.zerock.service.UserService;
-
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -48,28 +40,33 @@ public class MainController {
 	private UserService service;
 	
 	@Setter(onMethod_ = @Autowired)
-	private MessageService messageservice;
+    private CBoardService cboardservice;	
 	
-	//MainListService mainlistservice;
+	@Setter(onMethod_ = @Autowired)
+	private MarketService marketservice;
 	
+	@Setter(onMethod_ = @Autowired)
+	private CsService csservice;
+	
+	@Setter(onMethod_ = @Autowired)
+	private SProductService sproductservice;
 	
 	//메인 홈 
 	@RequestMapping("/home")
-	public void main() {
+	public void main(Model model) {
+		List<CBoardVO> cboardlist = cboardservice.getCbMainList();
+		List<MarketVO> marketlist = marketservice.getMarketMainList();
+		List<NoticeVO> noticelist = csservice.getNoticeMainList();
+		List<SProductVO> storelist = sproductservice.getsproductMainList(); 
 		
-		//List<listVo> storeList = listService.스토어게시글 불러오는 쿼리 
-		//List<listVo> joongGoList = listService.중고나라게시글 불러오는 쿼리(market)
-		//List<listVo> openBoardList = listService.자유게시판 불러오는 쿼리
-		
-//		request.setAttribute("storeList", storeList);
-		
-		
+		model.addAttribute("cboardList", cboardlist);
+		model.addAttribute("marketlist", marketlist);
+		model.addAttribute("noticelist", noticelist);
+		model.addAttribute("storelist", storelist);
 		
 		log.info("home method");
 		
-//		return "/main/home";
 	}
-	
 	
 	
 	//로그인 
@@ -77,7 +74,6 @@ public class MainController {
 	public void login() {
 		log.info("login method");
 	}
-	
 	
 	
 	//약관동의  
@@ -139,142 +135,11 @@ public class MainController {
 		boolean ok = service.insertB(vo);
 
 		if (ok) {
-			return "redirect:/main/home";
+			return "redirect:/main/login";
 		} else {
 			return "redirect:/main/signupB?error";
 		}
 	}
-	
-	
-	
-	//마이페이지 
-	@RequestMapping("/mypage")
-	public void mypage() {
-		log.info(" mypage method");
-	}
-	
-	
-
-	
-	//수정후 정보페이지 로딩  
-	//경로이동하는건 get방식 
-	
-	@GetMapping("/myinfos")
-	@PreAuthorize("isAuthenticated()")
-	public void info(Principal principal, Model model) {
-		log.info(principal.getName());
-		
-		UserVO uservo = service.read(principal.getName());
-		model.addAttribute("uservo", uservo);
-		
-	}
-	
-	
-
-	
-	//비밀번호확인 후 정보페이지로 이동 
-	@PostMapping("/myinfos")
-	@PreAuthorize("isAuthenticated()")
-	public String checkpwMethod(Principal principal,Model model, String userpwck) {
-		
-		log.info(principal.getName());
-		
-		UserVO uservo = service.read(principal.getName());
-		model.addAttribute("uservo", uservo);
-		
-		String Encoderpw =uservo.getUserpw();
-		
-		BCryptPasswordEncoder encoder =new BCryptPasswordEncoder();
-		
-		
-		
-		String resultshow ="";
-		
-		if(encoder.matches(userpwck,Encoderpw)) {
-			
-			log.info("입력한 비밀번호 일치 ");
-			resultshow= "/main/myinfos";
-			
-		}else {
-			log.info("불 일치 ");
-			resultshow ="redirect:/main/mypage?error";
-		
-		}
-		
-		return resultshow;
-	}
-		
-	
-	//정보불러서 수정하기 
-	@PostMapping("/modify")
-	
-	@PreAuthorize("isAuthenticated()")
-	public String modify(UserVO vo, RedirectAttributes rttr, Authentication auth) {
-		
-		boolean ok = service.modify(vo);
-		
-		if(ok) {
-			rttr.addAttribute("status","success");
-			// session의 authentication 을 수정
-			CustomUser user = (CustomUser) auth.getPrincipal();
-			user.setUser(vo);
-		}else {
-			rttr.addAttribute("status","error");
-		}
-		
-		return "redirect:/main/myinfos";
-		
-	}
-	
-	//비밀번호 수정하기 
-	@PostMapping("/modifypassword")
-	@PreAuthorize("isAuthenticated()")
-	public String modifyPassword(UserVO vo,Principal principal, RedirectAttributes rttr, Authentication auth) {
-		
-		vo.setUserid(principal.getName());
-		
-		boolean ok =service.modifyPassword(vo);
-		if(ok) {
-			// session의 authentication 을 수정
-			CustomUser user = (CustomUser) auth.getPrincipal();
-			user.setUser(service.read(principal.getName()));
-			rttr.addFlashAttribute("qweasd", "비밀번호을 수정했습니다 :) ");
-			log.info("비밀번호 수정성공 ! ");
-		}else {
-			log.info("비밀번호 수정실패 ! ");
-		}
-		
-		
-		return "redirect:/main/home";
-		
-	}
-	
-	
-	
-	
-	//회원탈퇴 
-	@PostMapping("/removeuser")
-	@PreAuthorize("isAuthenticated()")
-	public String remove(UserVO vo, HttpServletRequest req, String inputPassword, Principal principal) throws ServletException{
-		vo.setUserid(principal.getName());
-		
-		log.info(vo);
-		log.info(inputPassword);
-		boolean ok = service.remove(vo,inputPassword);
-		
-		if(ok) {
-			log.info("탈퇴성공  ");
-			req.logout();
-			return "redirect:/main/home";
-		}else {
-			log.info("탈퇴실패 ");
-			return "redirect:/main/mypage";
-		}
-		
-		
-	}
-	
-	
 	
 	
 	
@@ -347,4 +212,6 @@ public class MainController {
 		}
 		return "main/findPw";	
 	}
+	
+	
 }
