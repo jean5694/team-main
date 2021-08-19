@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="org.zerock.mapper.CsMapper">
+
+	<!-- 1:1 문의 -->
+	<select id="getotolist" resultType="org.zerock.domain.OtoVO">
+		SELECT * FROM oto WHERE userid=#{userid};
+	</select>
+	
+	<insert id="otowriting" useGeneratedKeys="true" keyProperty="qono" keyColumn="qono">
+		INSERT into oto
+		(otitle, userid, odetail)
+		VALUES
+		(#{otitle}, #{userid}, #{odetail} )
+	</insert>
+	
+	<select id="otoreading" resultMap="otoMap">
+		SELECT
+			o.qono qono,
+   			o.otitle otitle,
+    		o.userid userid,
+    		o.odetail odetail,
+    		o.oregdate oregdate,
+			of.fileName fileName,
+			a.userid userid
+			
+		FROM 
+			oto o
+		LEFT JOIN
+			otofile of
+		ON
+			o.qono = of.qono
+		JOIN 
+			GH_User a 
+		ON 
+			o.userid = a.userid 
+		WHERE 
+			o.qono = #{qono};
+	</select>
+	
+	<!-- 다중 파일 otofile -->
+	  <resultMap type="org.zerock.domain.OtoVO" id="otoMap">
+	  	<id property="qono" column="qono" />
+	  	<result property="otitle" column="otitle" />
+	  	<result property="userid" column="userid" />
+	  	<result property="odetail" column="odetail" />
+	    <result property="oregdate" column="oregdate" />
+	  	<collection property="fileName" resultMap="ofileNameMap"></collection>
+	  </resultMap>
+	  
+	  <resultMap type="string" id="ofileNameMap">
+	  	<result column="fileName" />
+	  </resultMap>
+	
+	<delete id="otodelete">
+		DELETE FROM oto
+		WHERE qono= #{qono};
+	</delete>
+	
+	<select id="otoanswer" resultType="org.zerock.domain.OtoAnswerVO">
+		SELECT * FROM otoanswer WHERE qono = #{qono};
+	</select>
+	
+	
+	
+	<!-- 공지사항 -->
+	
+	<select id="getNoticeList" resultType="org.zerock.domain.NoticeVO">
+		SELECT * FROM notice WHERE userid=#{userid};
+	</select>
+	
+	<insert id="noticeWriting" useGeneratedKeys="true" keyProperty="nno" keyColumn="nno">
+		INSERT INTO notice
+		(ntitle, userid, ndetail)
+		VALUES
+		(#{ntitle}, #{userid}, #{ndetail} )
+	</insert>
+	
+	<select id="noticeReading" resultMap="noticeMap">
+		SELECT
+			n.nno nno,
+			n.ntitle ntitle,
+			n.userid userid,
+			n.ndetail ndetail,
+			n.nregdate nregdate,
+			nf.fileName fileName,
+			a.userid userid
+		FROM
+			notice n 
+		LEFT JOIN
+			notice_file nf
+		ON
+			n.nno = nf.nno
+		JOIN 
+			GH_User a 
+		ON 
+			n.userid = a.userid 	
+		WHERE
+			n.nno = #{nno};
+	</select>
+	
+	<update id="noticeModify">
+	UPDATE notice
+
+	SET
+		ntitle = #{ntitle},
+		ndetail = #{ndetail},
+		userid = #{userid}	
+		
+	WHERE
+		nno = #{nno}
+	  </update>
+	
+	<delete id="noticeDelete">
+		DELETE FROM notice
+		WHERE nno= #{nno};
+	</delete>
+	
+	<!-- 다중 파일 notice_file -->
+	  <resultMap type="org.zerock.domain.NoticeVO" id="noticeMap">
+	  	<id property="nno" column="nno" />
+	  	<result property="ntitle" column="ntitle" />
+	  	<result property="userid" column="userid" />
+	  	<result property="ndetail" column="ndetail" />
+	    <result property="nregdate" column="nregdate" />
+	  	<collection property="fileName" resultMap="fileNameMap"></collection>
+	  </resultMap>
+	  
+	  <resultMap type="string" id="fileNameMap">
+	  	<result column="fileName" />
+	  </resultMap>
+	  
+	  <!-- 메인공지사항 글조회  -->
+	<select id="getNoticeMainList" resultType="org.zerock.domain.NoticeVO">
+		 SELECT nno,
+	       ntitle,
+	       userid,
+	       ndetail,
+	       nregdate
+	  FROM notice
+	 ORDER BY nregdate DESC
+	 LIMIT 5;
+	 </select>
+	
+	
+</mapper>
