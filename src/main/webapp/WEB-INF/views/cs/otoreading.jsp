@@ -67,7 +67,7 @@
 									</div>
 								</c:forEach>
 							</c:if>
-						</div>
+					</div>
 				
 					<div class="form-group">
 						<label for="input2">작성자</label>

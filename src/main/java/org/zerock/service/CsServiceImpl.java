@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.zerock.domain.OtoVO;
 import org.zerock.domain.OtofileVO;
 import org.zerock.domain.OtoAnswerVO;
+import org.zerock.domain.Criteria;
 import org.zerock.domain.NoticeVO;
 import org.zerock.domain.Notice_fileVO;
 import org.zerock.mapper.CsMapper;
@@ -46,8 +47,8 @@ public class CsServiceImpl implements CsService {
 	private OtofileMapper ofileMapper;
 	
 	public CsServiceImpl() {
-		   this.bucketName = "choongang-ys";
-		   this.profileName = "spring1";
+		   this.bucketName = "choongang-gohome01";
+		   this.profileName = "gohome1";
 		   
 		   Path contentLocation = new File(System.getProperty("user.home") + "/.aws/credentials").toPath();
 		      ProfileFile pf = ProfileFile.builder()
@@ -65,9 +66,15 @@ public class CsServiceImpl implements CsService {
 	   }
 	
 	@Override
-	public List<OtoVO> getotolist(OtoVO ovo){
-		return mapper.getotolist(ovo);
+	public List<OtoVO> getotolist(Criteria cri){
+		return mapper.getotolist(cri);
 	}
+	
+	@Override
+	public int getTotalO(Criteria cri) {
+	//게시글 총 갯수 구하는 매퍼  
+	return mapper.getTotalCountO(cri); 
+	   }
 	
 	// 은비 수정 8-16
 	@Override
@@ -155,9 +162,15 @@ public class CsServiceImpl implements CsService {
 	}
 
 	@Override
-	public List<NoticeVO> getNoticeList(NoticeVO nvo) {
+	public List<NoticeVO> getNoticeList(Criteria cri) {
 		
-		return mapper.getNoticeList(nvo);
+		return mapper.getNoticeList(cri);
+	}
+	
+	@Override
+	public int getTotalN(Criteria cri) {
+	//게시글 총 갯수 구하는 매퍼  
+	return mapper.getTotalCountN(cri); 
 	}
 
 

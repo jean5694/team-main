@@ -9,8 +9,12 @@ import org.zerock.domain.OtoAnswerVO;
 import org.zerock.domain.OtoVO;
 
 public interface CsService {
-	public List<OtoVO> getotolist(OtoVO ovo);
-	public List<NoticeVO> getNoticeList(NoticeVO nvo);
+	public List<OtoVO> getotolist(Criteria cri);
+	public List<NoticeVO> getNoticeList(Criteria cri);
+	// 총 페이지
+	public int getTotalO(Criteria cri);
+	public int getTotalN(Criteria cri);
+	
 	
 	public void otowriting(OtoVO ovo);
 	public void otowriting(OtoVO ovo, MultipartFile[] oto_file);

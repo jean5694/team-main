@@ -83,9 +83,7 @@
 					
 					<div class="form-group">
 						<label for="textarea1">내용</label>
-						<textarea id="textarea1" class="form-control" name="ndetail" rows="30">
-						<c:out value="${nvo.ndetail }" />
-						</textarea>
+						<textarea id="textarea1" class="form-control" name="ndetail" rows="30"><c:out value="${nvo.ndetail }" /></textarea>
 					</div>
 					
 					<c:if test="${not empty nvo.fileName }">

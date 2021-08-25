@@ -13,6 +13,25 @@
 
 <%@ include file="/WEB-INF/subModules/bootstrapHeader.jsp" %>
 
+<script>
+$(document).ready(function() {
+	$("#list-pagenation2 a").click(function(e) {
+		// 기본 액션 중지 (hyperlink 역할 안함)
+		e.preventDefault();
+		
+		//console.log("a요소 클릭됨");
+		
+		var actionForm = $("#actionForm");
+		
+		// form의 pageNum input의 값을 a 요소의 href값으로 변경
+		actionForm.find("[name=pageNum]").val($(this).attr("href"));
+		
+		// submit
+		actionForm.submit();
+	});
+});
+</script>
+
 <title>1:1문의</title>
 </head>
 <body>
@@ -51,48 +70,42 @@
 			</c:forEach>			
 		</tbody>
 		</table>
-</div>
 
 
-<!--  pagenation -->
-<div>
-<nav aria-label="Page navigation example">
-  <ul id="list-pagenation1" class="pagination justify-content-center">
-  
-  	<c:if test="${pageMaker.prev }">
-	    <li class="page-item">
-	      <a class="page-link" href="${pageMaker.startPage - 1 }">Previous</a>
-	    </li>
-  	</c:if>
+
+	<!--  pagenation -->
+		<div>
+			<nav aria-label="Page navigation example">
+			  <ul id="list-pagenation2" class="pagination justify-content-center">
+			  
+			  	<c:if test="${pageMaker.prev }">
+				    <li class="page-item">
+				      <a class="page-link" href="${pageMaker.startPage - 1 }">Previous</a>
+				    </li>
+			  	</c:if>
+				
+				<c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="num">
+				
+				    <li class="page-item ${num == cri.pageNum ? 'active' : '' }"><a class="page-link" href="${num }">${num }</a></li>
+				</c:forEach>
+			
+				<c:if test="${pageMaker.next }">
+				    <li class="page-item">
+				      <a class="page-link" href="${pageMaker.endPage + 1 }">Next</a>
+				    </li>
+				</c:if>
+			  </ul>
+			</nav>
+			
+			<!--페이지 링크용 form  -->
+			<div style="display: none;">
+				<form id="actionForm" action="${appRoot }/cs/oneToOne" method="get">
+					<input name="pageNum" value="${pageMaker.cri.pageNum }" />
+					<input name="amount" value="${pageMaker.cri.amount }" />
+				</form>
+			</div>
+		</div>
 	
-	<c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="num">
-	
-	<%-- href value
-	href="${appRoot }/board/list?pageNum=${pageMaker.cri.pageNum}&amount=${pageMaker.cri.amount}"
-	 --%>
-	 
-	    <li class="page-item ${num == cri.pageNum ? 'active' : '' }"><a class="page-link" 
-	    href="${num }">${num }</a></li>
-	</c:forEach>
-
-	<c:if test="${pageMaker.next }">
-	    <li class="page-item">
-	      <a class="page-link" href="${pageMaker.endPage + 1 }">Next</a>
-	    </li>
-	</c:if>
-  </ul>
-</nav>
-
-<%-- 페이지 링크용 form
-<div style="display: none;">
-	<form id="actionForm" action="${appRoot }/board/list" method="get">
-		<input name="pageNum" value="${cri.pageNum }" />
-		<input name="amount" value="${cri.amount }" />
-		<input name="type" value="${cri.type }" />
-		<input name="keyword" value="${cri.keyword }" />
-	</form>
-</div>
-</div>
 	<!-- 게시글등록성공시 모달 나오게   -->
 		<c:if test="${not empty result }" >
 			<script>
@@ -104,7 +117,7 @@
 				}
 				 else {
 						
-						console.log("너 전에 여기 왔었어!!!!");
+						console.log("게시글 등록 성공");
 					}
 			});
 			</script>
@@ -129,6 +142,14 @@
 			</div>
 		</c:if>
 		
-		 --%>
+		
+			
+
+		<footer>
+			<nb:footer></nb:footer>
+		</footer>
+		
+	</div>
+
 </body>
 </html>

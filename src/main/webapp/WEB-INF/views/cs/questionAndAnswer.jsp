@@ -59,7 +59,9 @@
   </div>
  
 </div>
-
+		<footer>
+			<nb:footer></nb:footer>
+		</footer>
 
 </div>
 </body>

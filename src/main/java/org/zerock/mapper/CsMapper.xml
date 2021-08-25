@@ -7,7 +7,20 @@
 
 	<!-- 1:1 문의 -->
 	<select id="getotolist" resultType="org.zerock.domain.OtoVO">
-		SELECT * FROM oto WHERE userid=#{userid};
+		<![CDATA[
+    	SELECT 
+    		qono qono,
+    		otitle otitle,
+    		userid userid,
+    		odetail odetail,
+    		oregdate oregdate 
+    		   	
+     	FROM oto
+    	 
+     	ORDER BY qono DESC
+     
+    	 LIMIT #{from}, #{amount}
+    ]]>
 	</select>
 	
 	<insert id="otowriting" useGeneratedKeys="true" keyProperty="qono" keyColumn="qono">
@@ -41,6 +54,14 @@
 			o.qono = #{qono};
 	</select>
 	
+	<!-- resultType : 결과를 받을 타입 지정 -->
+	<!-- 페이징 : 게시글 총 갯수 -->
+	<select id="getTotalCountO" resultType="int">
+		SELECT COUNT(*) FROM oto o
+		<!-- <include refid="criteria"></include> -->
+	</select>
+	
+	
 	<!-- 다중 파일 otofile -->
 	  <resultMap type="org.zerock.domain.OtoVO" id="otoMap">
 	  	<id property="qono" column="qono" />
@@ -69,7 +90,27 @@
 	<!-- 공지사항 -->
 	
 	<select id="getNoticeList" resultType="org.zerock.domain.NoticeVO">
-		SELECT * FROM notice WHERE userid=#{userid};
+		<![CDATA[
+    	SELECT 
+    		nno nno,
+    		ntitle ntitle,
+    		userid userid,
+    		ndetail ndetail,
+    		nregdate nregdate  
+    	  	
+     	FROM notice
+    	 
+     	ORDER BY nno DESC
+     
+    	 LIMIT #{from}, #{amount}
+    ]]>
+	</select>
+	
+	<!-- resultType : 결과를 받을 타입 지정 -->
+	<!-- 페이징 : 게시글 총 갯수 -->
+	<select id="getTotalCountN" resultType="int">
+		SELECT COUNT(*) FROM notice n
+		<!-- <include refid="criteria"></include> -->
 	</select>
 	
 	<insert id="noticeWriting" useGeneratedKeys="true" keyProperty="nno" keyColumn="nno">
@@ -118,7 +159,7 @@
 		DELETE FROM notice
 		WHERE nno= #{nno};
 	</delete>
-	
+
 	<!-- 다중 파일 notice_file -->
 	  <resultMap type="org.zerock.domain.NoticeVO" id="noticeMap">
 	  	<id property="nno" column="nno" />
